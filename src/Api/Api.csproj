@@ -4,7 +4,7 @@
         <TargetFramework>net10.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <RootNamespace>Template.Api</RootNamespace>
+        <RootNamespace>LinguaCommunity.Api</RootNamespace>
         <UserSecretsId>0355a112-0ead-4772-b115-9d6ed6315711</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerfileContext>..\..</DockerfileContext>

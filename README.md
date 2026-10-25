@@ -1,10 +1,44 @@
-# .NET Backend Project Template
+# LinguaCommunity
 
-A reusable template for creating .NET backend projects with a layered architecture.
+A multilingual article community where people publish in the language they know best, read translated versions of articles, and collaboratively improve translations.
 
-The template provides a predefined project structure with separate layers for API, application logic, domain logic, and infrastructure.
+## Project Goals
 
-## Project Structure
+The goal is to build a platform where:
+
+- Authors publish articles in their preferred language.
+- Readers can access machine-translated versions.
+- Users suggest corrections to translations.
+- Article authors review and accept or reject suggestions.
+- Accepted changes create new translation revisions without modifying previous versions.
+
+## Planned MVP
+
+- [ ] Article publishing and feed
+- [ ] User authentication and authorization
+- [ ] Asynchronous translation through a provider abstraction
+- [ ] Translation status tracking and failure handling
+- [ ] Translation correction proposals
+- [ ] Author approval and rejection workflow
+- [ ] Immutable translation revision history
+- [ ] Protection against stale and conflicting proposals
+- [ ] Comments
+- [ ] Unit and integration tests
+
+## Technology Stack
+
+- **Language:** C#
+- **Platform:** .NET 10
+- **API:** ASP.NET Core Web API
+- **Persistence:** PostgreSQL and Entity Framework Core
+- **Infrastructure:** Docker and Docker Compose
+- **CI:** GitHub Actions
+
+The translation integration will be isolated behind an application-level interface. This makes it possible to start with a mock implementation and introduce an external translation or AI provider later without coupling domain logic to a specific vendor.
+
+## Architecture
+
+The initial solution uses a layered structure:
 
 ```text
 src/
@@ -17,332 +51,88 @@ tests/
 └── ...
 ```
 
-Each layer is represented by a separate `.csproj` project.
+### Layer responsibilities
 
-## Architecture
+- **Api** — HTTP endpoints, authentication, authorization, and API configuration.
+- **Application** — use cases, application services, DTOs, and interfaces.
+- **Domain** — business entities, value objects, and domain rules.
+- **Infrastructure** — persistence, external integrations, and background processing.
+- **Tests** — unit and integration tests.
 
-The basic dependency structure is:
+The intended dependency direction keeps business rules independent of HTTP, database, and external translation-provider implementations.
 
-```text
-        ┌─────────┐
-        │   Api   │
-        └────┬────┘
-             │
-             ▼
-      ┌─────────────┐
-      │ Application │
-      └──────┬──────┘
-             │
-             ▼
-       ┌─────────┐
-       │ Domain  │
-       └─────────┘
+## Reliability and Engineering Challenges
 
-Infrastructure ──────► Domain
-```
+The project is intended to demonstrate practical approaches to:
 
-### Layers
+- **Background processing** — execute translation jobs outside the HTTP request lifecycle.
+- **Outbox pattern** — persist business changes and outgoing work reliably.
+- **Retries and recovery** — handle transient provider failures with bounded retries and backoff.
+- **Idempotency** — prevent duplicate processing from creating duplicate results or revisions.
+- **Optimistic concurrency** — reject correction proposals based on outdated translation revisions.
+- **Immutable history** — preserve accepted translation revisions for traceability.
+- **Automated testing** — verify business rules and important failure scenarios.
 
-| Layer            | Responsibility                                                                       |
-| ---------------- | ------------------------------------------------------------------------------------ |
-| `Api`            | HTTP API, controllers, authentication, authorization, and API configuration          |
-| `Application`    | Use cases, application logic, DTOs, and application interfaces                       |
-| `Domain`         | Domain entities, value objects, enums, and domain rules                              |
-| `Infrastructure` | Database access, repositories, external services, and infrastructure implementations |
+These are planned capabilities and will be implemented incrementally.
 
-The exact contents of each layer may vary depending on the project.
+## Getting Started
 
----
+### Prerequisites
 
-# Creating a New Project
+- .NET 10 SDK
+- Git
+- Docker Desktop or Docker Engine (for local infrastructure when configured)
 
-## 1. Create a Repository from the Template
+### Restore and build
 
-Create a new GitLab repository using this repository as a template.
-
-Clone the new repository locally:
+Clone the repository and run:
 
 ```bash
-git clone <repository-url>
-cd <project-directory>
-```
+git clone https://github.com/Sterlios/LinguaCommunity.git
+cd LinguaCommunity
 
----
-
-## 2. Rename the Solution
-
-The template contains a solution with the template name.
-
-Rename it to the name of your new project.
-
-For example:
-
-```text
-Template.sln
-```
-
-becomes:
-
-```text
-SchoolPlatform.sln
-```
-
----
-
-## 3. Rename the Projects
-
-The template contains the following projects:
-
-```text
-Template.Api
-Template.Application
-Template.Domain
-Template.Infrastructure
-```
-
-Rename them using the new project name.
-
-For example:
-
-```text
-SchoolPlatform.Api
-SchoolPlatform.Application
-SchoolPlatform.Domain
-SchoolPlatform.Infrastructure
-```
-
-Make sure to rename the corresponding `.csproj` files as well.
-
----
-
-## 4. Update `RootNamespace`
-
-Each project defines its own `RootNamespace`.
-
-For example:
-
-```xml
-<PropertyGroup>
-    <RootNamespace>Template.Api</RootNamespace>
-</PropertyGroup>
-```
-
-Change it to:
-
-```xml
-<PropertyGroup>
-    <RootNamespace>SchoolPlatform.Api</RootNamespace>
-</PropertyGroup>
-```
-
-Update `RootNamespace` for every project:
-
-```text
-Template.Api             → SchoolPlatform.Api
-Template.Application    → SchoolPlatform.Application
-Template.Domain         → SchoolPlatform.Domain
-Template.Infrastructure → SchoolPlatform.Infrastructure
-```
-
----
-
-## 5. Update C# Namespaces
-
-Search the entire repository for references to `Template`.
-
-For example:
-
-```csharp
-namespace Template.Api.Controllers;
-```
-
-Change it to:
-
-```csharp
-namespace SchoolPlatform.Api.Controllers;
-```
-
-Also update `using` directives:
-
-```csharp
-using Template.Application;
-using Template.Domain;
-```
-
-to:
-
-```csharp
-using SchoolPlatform.Application;
-using SchoolPlatform.Domain;
-```
-
-### Important
-
-Search the entire repository for:
-
-```text
-Template
-```
-
-Replace all references that belong to the template.
-
-There should be no remaining `Template` references unless they are intentionally kept.
-
----
-
-## 6. Check Project References
-
-Make sure all project references point to the renamed `.csproj` files.
-
-For example:
-
-```xml
-<ProjectReference Include="..\Application\SchoolPlatform.Application.csproj" />
-```
-
-instead of:
-
-```xml
-<ProjectReference Include="..\Application\Template.Application.csproj" />
-```
-
-Also check the project references inside the solution file.
-
----
-
-# Project-Specific Configuration
-
-After renaming the projects, configure the parts that are specific to the new application.
-
-## Application Configuration
-
-Check:
-
-```text
-src/Api/appsettings.json
-src/Api/appsettings.Development.json
-src/Api/appsettings.Local.json
-```
-
-Configure the values required by the new project, such as:
-
-* database connection strings;
-* external service URLs;
-* authentication settings;
-* Kafka configuration;
-* Redis configuration;
-* other environment-specific settings.
-
-Do not commit passwords, API keys, tokens, or other secrets to the repository.
-
-Use environment variables or an appropriate secret-management solution instead.
-
-For Local environment use dotnet user-secrets
-
----
-
-## Docker
-
-If the template contains Docker configuration, check:
-
-```text
-Dockerfile
-docker-compose.yml
-.dockerignore
-```
-
-Update any project-specific values, such as:
-
-* project names;
-* assembly names;
-* paths;
-* ports;
-* service names;
-* environment variables.
-
----
-
-## CI/CD
-
-Check the GitHub CI configuration:
-
-```text
-github-ci.yml
-```
-
-Update any project-specific settings, such as:
-
-* Docker image names;
-* container registry paths;
-* environment names;
-* deployment configuration;
-* project-specific variables.
-
----
-
-## README
-
-Replace this README with project-specific documentation once the project has been configured.
-
-The project README should describe:
-
-* project purpose;
-* architecture;
-* how to run the application;
-* required dependencies;
-* configuration;
-* database setup and migrations;
-* how to run tests;
-* deployment process.
-
----
-
-# Verify the Project
-
-After completing the renaming and configuration, restore the dependencies:
-
-```bash
 dotnet restore
-```
-
-Build the solution:
-
-```bash
 dotnet build
 ```
 
-Run the tests:
+### Run the API
+
+```bash
+dotnet run --project src/Api/Api.csproj
+```
+
+The API launch profiles are defined in `src/Api/Properties/launchSettings.json`. Swagger is configured for non-production environments.
+
+> **Current status:** the repository contains the initial .NET solution scaffold. The complete application, database integration, migrations, translation workflow, and test suite are still under development. Local infrastructure setup will be documented as it is added.
+
+## Configuration and Secrets
+
+Keep non-sensitive configuration in `appsettings.json`.
+
+Do not commit passwords, API keys, access tokens, or production connection strings.
+
+For local development, initialize .NET User Secrets:
+
+```bash
+dotnet user-secrets init --project src/Api/Api.csproj
+```
+
+Use environment variables or an appropriate secret-management solution for CI and deployment.
+
+## Testing
+
+As test projects are introduced, run the full test suite with:
 
 ```bash
 dotnet test
 ```
 
-If the project contains an API, run it:
+## Continuous Integration
 
-```bash
-dotnet run --project src/Api
-```
+The repository includes a GitHub Actions workflow configured to restore, build, and test the .NET solution on pushes and pull requests targeting `master` and `develop`.
 
-Make sure the application starts successfully.
+Check the **Actions** tab for the actual status of CI runs.
 
----
+## Project Status
 
-# Final Checklist
-
-Before starting development, make sure:
-
-* [ ] The repository was created from this template
-* [ ] The solution was renamed
-* [ ] `RootNamespace` was updated in every project
-* [ ] C# namespaces were updated
-* [ ] `using` directives were updated
-* [ ] `appsettings.json` was configured
-* [ ] Docker configuration was checked
-* [ ] GitHub CI/CD configuration was checked
-* [ ] All unintended `Template` references were removed
-* [ ] `dotnet restore` succeeds
-* [ ] `dotnet build` succeeds
-* [ ] `dotnet test` succeeds
-* [ ] The API starts successfully
-* [ ] A project-specific README was created
-
+The project is in its initial setup stage. Features listed in the MVP and engineering sections describe the intended implementation, not functionality already available in the current scaffold.

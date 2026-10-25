@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Template.Infrastructure.Extensions;
+namespace LinguaCommunity.Infrastructure.Extensions;
 
 public static class DependencyInjectionExtensions
 {

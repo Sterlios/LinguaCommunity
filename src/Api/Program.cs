@@ -1,5 +1,5 @@
-using Template.Application.Extensions;
-using Template.Infrastructure.Extensions;
+using LinguaCommunity.Application.Extensions;
+using LinguaCommunity.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
