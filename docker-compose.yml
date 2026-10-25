@@ -5,7 +5,15 @@ services:
       context: .
       dockerfile: src/Api/Dockerfile
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Postgres: >-
+        Host=postgres;Port=5432;Database=${POSTGRES_DB};
+        Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+    ports:
+      - "8080:8080"
 
   postgres:
     image: postgres:17-alpine
