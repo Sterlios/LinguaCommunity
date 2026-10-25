@@ -95,29 +95,131 @@ dotnet restore
 dotnet build
 ```
 
-### Run the API
+### Run Docker Compose
 
-```bash
-dotnet run --project src/Api/Api.csproj
+#### 1. Configure environment variables
+
+Create a .env file in the repository root:
+
+```
+POSTGRES_DB=lingua_community
+POSTGRES_USER=lingua_app
+POSTGRES_PASSWORD=change_me_for_local_development
+POSTGRES_PORT=5432
+
+CONNECTION_STRING=Host=postgres;Port=5432;Database=lingua_community;Username=lingua_app;Password=change_me_for_local_development
 ```
 
-The API launch profiles are defined in `src/Api/Properties/launchSettings.json`. Swagger is configured for non-production environments.
+Use the same database name, username, and password in POSTGRES_* and CONNECTION_STRING. Change the example password for your local environment.
 
-> **Current status:** the repository contains the initial .NET solution scaffold. The complete application, database integration, migrations, translation workflow, and test suite are still under development. Local infrastructure setup will be documented as it is added.
+Do not commit .env to the repository. It contains local credentials. You can commit a .env.example file with placeholder values instead.
 
-## Configuration and Secrets
+Docker Compose uses .env for variable substitution. These values must be explicitly passed to a container through environment or env_file.
 
-Keep non-sensitive configuration in `appsettings.json`.
+When the API runs inside Docker Compose, the database hostname is postgres, the name of the PostgreSQL service. Do not use localhost for this connection.
 
-Do not commit passwords, API keys, access tokens, or production connection strings.
+The API container must receive the connection string through the ConnectionStrings__Postgres environment variable.
 
-For local development, initialize .NET User Secrets:
+#### 2. Start the containers
 
-```bash
+Validate the Compose configuration, then build and start the services:
+
+```
+docker compose config
+docker compose up --build -d
+docker compose ps
+```
+
+The PostgreSQL service has a health check. The API should use depends_on with condition: service_healthy so that Compose waits for PostgreSQL to become ready before starting the API.
+
+View the API logs:
+```
+docker compose logs -f api
+```
+
+If the API service publishes port 8080 to the host, open http://localhost:8080. The exact API and Swagger URLs depend on the container and application configuration.
+
+#### 3. Stop the containers
+
+docker compose down
+
+PostgreSQL data is stored in the named Docker volume lingua_community_postgres_data and survives normal container stops and restarts.
+
+Avoid docker compose down -v unless you intentionally want to delete the persisted database volume.
+
+### Run the API
+
+You can run PostgreSQL in Docker while launching the API from your IDE or command line. In this scenario, connect to the published PostgreSQL port using Host=localhost.
+
+Initialize User Secrets for the API project:
+
+```
 dotnet user-secrets init --project src/Api/Api.csproj
 ```
 
-Use environment variables or an appropriate secret-management solution for CI and deployment.
+Set the connection string:
+
+```
+dotnet user-secrets set "ConnectionStrings:Postgres" "Host=localhost;Port=5432;Database=lingua_community;Username=lingua_app;Password=YOUR_LOCAL_PASSWORD" --project src/Api/Api.csproj
+```
+
+Start only PostgreSQL:
+```
+docker compose up -d postgres
+```
+Run the API:
+```
+dotnet run --project src/Api/Api.csproj
+```
+ASP.NET Core reads the ConnectionStrings:Postgres setting through its configuration system. User Secrets are intended for local development and are not automatically available inside a Docker container.
+
+For the containerized API, pass configuration through the Compose service's environment or use an appropriate secret-management solution.
+
+### Start local infrastructure
+
+The project uses Docker Compose to run PostgreSQL for local development.
+
+1. Make sure Docker Desktop or Docker Engine is running.
+2. Create a `.env` file in the repository root:
+
+```dotenv
+POSTGRES_DB=lingua_community
+POSTGRES_USER=lingua_app
+POSTGRES_PASSWORD=local_dev_password_change_me
+POSTGRES_PORT=5432
+```
+
+Use a different password for your local environment if needed. Do not commit `.env` to the repository.
+
+3. Start PostgreSQL:
+
+```bash
+docker compose up -d postgres
+```
+
+4. Verify the container status:
+
+```bash
+docker compose ps
+```
+
+Wait until PostgreSQL reports a healthy status before proceeding.
+
+To stop the container without deleting persisted database data:
+
+```bash
+docker compose down
+```
+
+PostgreSQL data is stored in a named Docker volume and survives container restarts.
+
+## Configuration and Secrets
+
+- Keep non-sensitive default settings in appsettings.json.
+- Use .NET User Secrets when running the API locally outside Docker.
+- Use a local .env file for Docker Compose variable substitution; do not commit it.
+- Use environment variables or a dedicated secret-management solution for CI and deployment.
+- Never commit passwords, API keys, access tokens, or production connection strings.
 
 ## Testing
 
