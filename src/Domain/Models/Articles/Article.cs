@@ -1,4 +1,5 @@
 ﻿using LinguaCommunity.Domain.Models.Support;
+using LinguaCommunity.Domain.Models.Translations;
 using LinguaCommunity.Domain.Models.Users;
 
 namespace LinguaCommunity.Domain.Models.Articles;
@@ -22,6 +23,7 @@ public class Article
     public string Content { get; private set; } = null!;
     public Language Language { get; }
     public int Version { get; private set; } = 1;
+    public List<Translation> Translations { get; } = [];
 
     public void Update(string title, string content)
     {
