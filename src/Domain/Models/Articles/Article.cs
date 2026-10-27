@@ -6,6 +6,8 @@ namespace LinguaCommunity.Domain.Models.Articles;
 
 public class Article
 {
+    private Article(){} // Required by EF
+
     public Article(UserId authorId, string title, string content, Language language)
     {
         ArgumentException.ThrowIfNullOrEmpty(title);
@@ -23,7 +25,8 @@ public class Article
     public string Content { get; private set; } = null!;
     public Language Language { get; }
     public int Version { get; private set; } = 1;
-    public List<Translation> Translations { get; } = [];
+    public DateTime CreatedAt { get; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; private set; }
 
     public void Update(string title, string content)
     {
@@ -32,20 +35,7 @@ public class Article
 
         Title = title;
         Content = content;
-        Version++;
-    }
-
-    public void UpdateContent(string content)
-    {
-        ArgumentException.ThrowIfNullOrEmpty(content);
-        Content = content;
-        Version++;
-    }
-
-    public void UpdateTitle(string title)
-    {
-        ArgumentException.ThrowIfNullOrEmpty(title);
-        Title = title;
+        UpdatedAt = DateTime.UtcNow;
         Version++;
     }
 }
