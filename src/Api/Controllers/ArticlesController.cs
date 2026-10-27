@@ -27,7 +27,9 @@ public class ArticlesController(ArticlesService service) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateArticle(CreateArticleRequest article, CancellationToken cancellationToken = default)
     {
-        await service.CreateArticle(article, cancellationToken);
+        var userId = Guid.Empty; // TODO: Replace with actual user ID retrieval logic (e.g., from authentication context)
+
+        await service.CreateArticle(userId, article, cancellationToken);
 
         return Created();
     }
@@ -35,7 +37,9 @@ public class ArticlesController(ArticlesService service) : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateArticle(Guid id, UpdateArticleRequest article, CancellationToken cancellationToken = default)
     {
-        await service.UpdateArticle(id, article, cancellationToken);
+        var userId = Guid.Empty; // TODO: Replace with actual user ID retrieval logic (e.g., from authentication context)
+
+        await service.UpdateArticle(userId, id, article, cancellationToken);
 
         return NoContent();
     }
@@ -43,7 +47,9 @@ public class ArticlesController(ArticlesService service) : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteArticle(Guid id, CancellationToken cancellationToken = default)
     {
-        await service.DeleteArticle(id, cancellationToken);
+        var userId = Guid.Empty; // TODO: Replace with actual user ID retrieval logic (e.g., from authentication context)
+
+        await service.DeleteArticle(userId, id, cancellationToken);
 
         return NoContent();
     }

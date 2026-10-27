@@ -1,9 +1,9 @@
 ﻿using LinguaCommunity.Domain.Models.Users;
 
-namespace LinguaCommunity.Application.Interfaces
+namespace LinguaCommunity.Application.Interfaces;
+
+public interface IUserRepository
 {
-    internal interface IUserRepository
-    {
-        Task<User> GetUserById(UserId authorId, CancellationToken cancellationToken);
-    }
+    Task<List<User>> ReadUsersByIds(List<UserId> userIds, CancellationToken cancellationToken);
+    Task<User> ReadUserById(UserId authorId, CancellationToken cancellationToken);
 }

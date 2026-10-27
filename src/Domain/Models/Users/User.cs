@@ -3,5 +3,5 @@
 public class User
 {
     public UserId Id { get; }
-    public string Name { get; }
+    public string Name { get; } = null!;
 }
