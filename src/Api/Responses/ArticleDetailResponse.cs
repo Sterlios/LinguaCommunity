@@ -4,7 +4,7 @@ public record ArticleDetailResponse
 (
     string Title,
     string Content,
-    string AuthorName,
+    AuthorResponse Author,
     DateTime CreatedAt,
     DateTime UpdatedAt
 );

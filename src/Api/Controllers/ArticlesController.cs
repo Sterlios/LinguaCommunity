@@ -1,8 +1,9 @@
-﻿using LinguaCommunity.Api.Responses;
+﻿using LinguaCommunity.Api.Requests;
+using LinguaCommunity.Api.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LinguaCommunity.Api.Responses;
+namespace LinguaCommunity.Api.Requests;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -15,8 +16,8 @@ public class ArticlesController : ControllerBase
         return Ok(new { Message = "GetArticles endpoint hit" });
     }
 
-    [HttpGet("{id}")]]
-    public ActionResult<ArticleDetailResponse> GetArticleById(int id)
+    [HttpGet("{id}")]
+    public ActionResult<ArticleDetailResponse> GetArticleById(Guid id)
     {
         // Placeholder for getting a specific article by ID logic
         return Ok(new { Message = $"GetArticleById endpoint hit with ID: {id}" });
@@ -30,14 +31,14 @@ public class ArticlesController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateArticle(int id, UpdateArticleRequest article)
+    public IActionResult UpdateArticle(Guid id, UpdateArticleRequest article)
     {
         // Placeholder for updating an article logic
         return Ok(new { Message = $"UpdateArticle endpoint hit with ID: {id}" });
     }
 
     [HttpDelete("{id}")]
-    public IActionResult DeleteArticle(int id)
+    public IActionResult DeleteArticle(Guid id)
     {
         // Placeholder for deleting an article logic
         return Ok(new { Message = $"DeleteArticle endpoint hit with ID: {id}" });

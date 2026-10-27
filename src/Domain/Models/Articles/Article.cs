@@ -13,6 +13,7 @@ public class Article
         ArgumentException.ThrowIfNullOrEmpty(title);
         ArgumentException.ThrowIfNullOrEmpty(content);
 
+        Id = new ArticleId(Guid.CreateVersion7());
         AuthorId = authorId;
         Title = title;
         Content = content;

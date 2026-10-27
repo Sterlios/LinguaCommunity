@@ -3,7 +3,7 @@
 public record ArticlesItemResponse
 (
     string Title,
-    string AuthorName,
+    AuthorResponse Author,
     DateTime CreatedAt,
     DateTime UpdatedAt
 );
