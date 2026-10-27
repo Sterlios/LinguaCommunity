@@ -1,4 +1,4 @@
-﻿namespace LinguaCommunity.Api.Requests;
+﻿namespace LinguaCommunity.Application.Dtos.Requests;
 
 public record UpdateArticleRequest
 (

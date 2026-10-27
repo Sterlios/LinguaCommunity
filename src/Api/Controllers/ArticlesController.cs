@@ -1,46 +1,50 @@
-﻿using LinguaCommunity.Api.Requests;
-using LinguaCommunity.Api.Responses;
-using Microsoft.AspNetCore.Http;
+﻿using LinguaCommunity.Application.Dtos.Requests;
+using LinguaCommunity.Application.Dtos.Responses;
+using LinguaCommunity.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LinguaCommunity.Api.Requests;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ArticlesController : ControllerBase
+public class ArticlesController(ArticlesService service) : ControllerBase
 {
     [HttpGet]
-    public ActionResult<List<ArticlesItemResponse>> GetArticles()
-    {
-        // Placeholder for getting articles logic
-        return Ok(new { Message = "GetArticles endpoint hit" });
-    }
+    public async Task<List<ArticlesItemResponse>> GetArticles(CancellationToken cancellationToken = default) => 
+        await service.GetArticles(cancellationToken);
 
     [HttpGet("{id}")]
-    public ActionResult<ArticleDetailResponse> GetArticleById(Guid id)
+    public async Task<ActionResult<ArticleDetailResponse>> GetArticleById(Guid id, CancellationToken cancellationToken = default)
     {
-        // Placeholder for getting a specific article by ID logic
-        return Ok(new { Message = $"GetArticleById endpoint hit with ID: {id}" });
+        var article = await service.GetArticleById(id, cancellationToken);
+
+        if (article == null)
+            return NotFound();
+
+        return Ok(article);
     }
 
     [HttpPost]
-    public IActionResult CreateArticle(CreateArticleRequest article)
+    public async Task<IActionResult> CreateArticle(CreateArticleRequest article, CancellationToken cancellationToken = default)
     {
-        // Placeholder for creating an article logic
-        return Ok(new { Message = "CreateArticle endpoint hit" });
+        await service.CreateArticle(article, cancellationToken);
+
+        return Created();
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateArticle(Guid id, UpdateArticleRequest article)
+    public async Task<IActionResult> UpdateArticle(Guid id, UpdateArticleRequest article, CancellationToken cancellationToken = default)
     {
-        // Placeholder for updating an article logic
-        return Ok(new { Message = $"UpdateArticle endpoint hit with ID: {id}" });
+        await service.UpdateArticle(id, article, cancellationToken);
+
+        return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public IActionResult DeleteArticle(Guid id)
+    public async Task<IActionResult> DeleteArticle(Guid id, CancellationToken cancellationToken = default)
     {
-        // Placeholder for deleting an article logic
-        return Ok(new { Message = $"DeleteArticle endpoint hit with ID: {id}" });
+        await service.DeleteArticle(id, cancellationToken);
+
+        return NoContent();
     }
 }

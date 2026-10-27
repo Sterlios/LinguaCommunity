@@ -1,4 +1,4 @@
-﻿namespace LinguaCommunity.Api.Responses;
+﻿namespace LinguaCommunity.Application.Dtos.Responses;
 
 public record AuthorResponse
 (
