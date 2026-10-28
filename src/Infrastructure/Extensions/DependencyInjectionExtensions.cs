@@ -10,7 +10,7 @@ public static class DependencyInjectionExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
-        services.AddDbContext<ArticlesContext>(options =>
+        services.AddDbContext<IUnitOfWork,ArticlesContext>(options =>
         {
             options.UseNpgsql("Postgres");
         });
