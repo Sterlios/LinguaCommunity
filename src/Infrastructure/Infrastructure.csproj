@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <Folder Include="Persistense\Configurations\Transations\" />
-    <Folder Include="Persistense\Repositories\" />
   </ItemGroup>
 
 </Project>

@@ -11,7 +11,7 @@ namespace LinguaCommunity.Application.Services;
 
 public class ArticlesService(
     ILogger<ArticlesService> logger, 
-    IUserRepository userRepository,
+    IUsersRepository userRepository,
     IArticlesRepository articlesRepository,
     IUnitOfWork unitOfWork)
 {
@@ -48,7 +48,8 @@ public class ArticlesService(
     { 
         var article = await articlesRepository.ReadArticleById(id, cancellationToken) ?? 
             throw new InvalidOperationException($"Article with ID {id} not found."); // TODO: Consider creating a custom exception for this scenario.
-        var author = await userRepository.ReadUserById(article.AuthorId, cancellationToken);
+        var author = await userRepository.ReadUserById(article.AuthorId, cancellationToken) ?? 
+            throw new InvalidOperationException($"Author with ID {article.AuthorId} not found."); // TODO: Consider creating a custom exception for this scenario.
 
         return article?.ToDetailResponse(author);
     }

@@ -1,4 +1,6 @@
 ﻿using LinguaCommunity.Application.Interfaces;
+using LinguaCommunity.Domain.Models.Articles;
+using LinguaCommunity.Domain.Models.Users;
 using LinguaCommunity.Infrastructure.Persistense.Configurations;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,6 +11,9 @@ namespace LinguaCommunity.Infrastructure.Persistense;
 
 public class ArticlesContext(DbContextOptions<ArticlesContext> options) : DbContext(options), IUnitOfWork
 {
+    public DbSet<Article> Articles { get; set; }
+    public DbSet<User> Users { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

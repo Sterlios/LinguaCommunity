@@ -1,4 +1,6 @@
-﻿using LinguaCommunity.Infrastructure.Persistense;
+﻿using LinguaCommunity.Application.Interfaces;
+using LinguaCommunity.Infrastructure.Persistense;
+using LinguaCommunity.Infrastructure.Persistense.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +14,9 @@ public static class DependencyInjectionExtensions
         {
             options.UseNpgsql("Postgres");
         });
+
+        services.AddScoped<IArticlesRepository,ArticlesRepository>();
+        services.AddScoped<IUsersRepository,UsersRepository>();
 
         return services;
     }
