@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Persistense\Configurations\" />
+    <Folder Include="Persistense\Configurations\Transations\" />
     <Folder Include="Persistense\Repositories\" />
   </ItemGroup>
 
