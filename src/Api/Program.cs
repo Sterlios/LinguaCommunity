@@ -14,9 +14,10 @@ if (!builder.Environment.IsProduction())
 }
 
 builder.Services.AddControllers();
-builder.Services.AddApplication();
-builder.Services.AddInfrastructure();
 builder.Services.AddLogging();
+
+builder.AddApplication();
+builder.AddInfrastructure();
 
 var app = builder.Build();
 

@@ -1,14 +1,15 @@
 ﻿using LinguaCommunity.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace LinguaCommunity.Application.Extensions;
 
 public static class DependencyInjectionExtensions
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static IHostApplicationBuilder AddApplication(this IHostApplicationBuilder builder)
     {
-        services.AddScoped<ArticlesService>();
+        builder.Services.AddScoped<ArticlesService>();
 
-        return services;
+        return builder;
     }
 }
