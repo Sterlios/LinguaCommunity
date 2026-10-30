@@ -29,7 +29,10 @@ public class ArticlesController(ArticlesService service) : ControllerBase
     {
         var userId = Guid.Empty; // TODO: Replace with actual user ID retrieval logic (e.g., from authentication context)
 
-        await service.CreateArticle(userId, article, cancellationToken);
+        await service.CreateArticle(
+            authorId: userId, 
+            articleData: article, 
+            cancellationToken);
 
         return Created();
     }
@@ -39,7 +42,11 @@ public class ArticlesController(ArticlesService service) : ControllerBase
     {
         var userId = Guid.Empty; // TODO: Replace with actual user ID retrieval logic (e.g., from authentication context)
 
-        await service.UpdateArticle(userId, id, article, cancellationToken);
+        await service.UpdateArticle(
+            articleId: id, 
+            authorId: id, 
+            articleData: article, 
+            cancellationToken);
 
         return NoContent();
     }
@@ -49,7 +56,10 @@ public class ArticlesController(ArticlesService service) : ControllerBase
     {
         var userId = Guid.Empty; // TODO: Replace with actual user ID retrieval logic (e.g., from authentication context)
 
-        await service.DeleteArticle(userId, id, cancellationToken);
+        await service.DeleteArticle(
+            authorId: userId, 
+            articleId: id, 
+            cancellationToken: cancellationToken);
 
         return NoContent();
     }

@@ -31,23 +31,23 @@ public class ArticlesService(
         logger.LogInformation("Article created with ID: {ArticleId} by Author ID: {AuthorId}", article.Id, authorId);
     }
 
-    public async Task DeleteArticle(Guid authorId, Guid id, CancellationToken cancellationToken)
+    public async Task DeleteArticle(Guid authorId, Guid articleId, CancellationToken cancellationToken)
     {
-        var article = await articlesRepository.ReadArticleById(id, cancellationToken) ?? 
-            throw new InvalidOperationException($"Article with ID {id} not found."); // TODO: Consider creating a custom exception for this scenario.
+        var article = await articlesRepository.ReadArticleById(articleId, cancellationToken) ?? 
+            throw new InvalidOperationException($"Article with ID {articleId} not found."); // TODO: Consider creating a custom exception for this scenario.
 
         if (article.AuthorId.Id != authorId)
-            throw new InvalidOperationException($"User with ID {authorId} is not the author of the article with ID {id}.");// TODO: Consider creating a custom exception for this scenario.
+            throw new InvalidOperationException($"User with ID {authorId} is not the author of the article with ID {articleId}.");// TODO: Consider creating a custom exception for this scenario.
 
         articlesRepository.DeleteArticle(article);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<ArticleDetailResponse?> GetArticleById(Guid id, CancellationToken cancellationToken)
+    public async Task<ArticleDetailResponse?> GetArticleById(Guid articleId, CancellationToken cancellationToken)
     { 
-        var article = await articlesRepository.ReadArticleById(id, cancellationToken) ?? 
-            throw new InvalidOperationException($"Article with ID {id} not found."); // TODO: Consider creating a custom exception for this scenario.
+        var article = await articlesRepository.ReadArticleById(articleId, cancellationToken) ?? 
+            throw new InvalidOperationException($"Article with ID {articleId} not found."); // TODO: Consider creating a custom exception for this scenario.
         var author = await userRepository.ReadUserById(article.AuthorId, cancellationToken) ?? 
             throw new InvalidOperationException($"Author with ID {article.AuthorId} not found."); // TODO: Consider creating a custom exception for this scenario.
 
@@ -62,13 +62,13 @@ public class ArticlesService(
         return articles.Select(a => a.ToItemResponse(authors.First(u => u.Id == a.AuthorId))).ToList();
     } 
 
-    public async Task UpdateArticle(Guid id, Guid authorId, UpdateArticleRequest articleData, CancellationToken cancellationToken)
+    public async Task UpdateArticle(Guid articleId, Guid authorId, UpdateArticleRequest articleData, CancellationToken cancellationToken)
     {
-        var article = await articlesRepository.GetArticleById(id, cancellationToken) ?? 
-            throw new InvalidOperationException($"Article with ID {id} not found."); // TODO: Consider creating a custom exception for this scenario.
+        var article = await articlesRepository.GetArticleById(articleId, cancellationToken) ?? 
+            throw new InvalidOperationException($"Article with ID {articleId} not found."); // TODO: Consider creating a custom exception for this scenario.
 
         if (article.AuthorId.Id != authorId)
-            throw new InvalidOperationException($"User with ID {authorId} is not the author of the article with ID {id}.");// TODO: Consider creating a custom exception for this scenario.
+            throw new InvalidOperationException($"User with ID {authorId} is not the author of the article with ID {articleId}.");// TODO: Consider creating a custom exception for this scenario.
 
         article.Update(articleData.Title, articleData.Content);
 
