@@ -27,7 +27,7 @@ public class Article
     public Language Language { get; }
     public int Version { get; private set; } = 1;
     public DateTime CreatedAt { get; } = DateTime.UtcNow;
-    public DateTime UpdatedAt { get; private set; }
+    public DateTime? UpdatedAt { get; private set; }
 
     public void Update(string title, string content)
     {

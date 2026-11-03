@@ -39,9 +39,6 @@ public class ArticleConfiguration : IEntityTypeConfiguration<Article>
         builder.Property(a => a.CreatedAt)
             .IsRequired();
 
-        builder.Property(a => a.UpdatedAt)
-            .IsRequired(false);
-
         builder.HasOne<User>()
                .WithMany()
                .HasForeignKey(a => a.AuthorId)

@@ -6,5 +6,5 @@ public record ArticleDetailResponse
     string Content,
     AuthorResponse Author,
     DateTime CreatedAt,
-    DateTime UpdatedAt
+    DateTime? UpdatedAt
 );
