@@ -3,6 +3,7 @@ using LinguaCommunity.Domain.Models.Support;
 
 namespace LinguaCommunity.Domain.Models.Translations;
 
+public record struct TranslationId(Guid Id);
 public class Translation
 {
     public TranslationId Id { get; }
