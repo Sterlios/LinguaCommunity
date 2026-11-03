@@ -1,0 +1,48 @@
+﻿using LinguaCommunity.Application.Exceptions;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+
+namespace LinguaCommunity.Api.Handling;
+
+public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
+{
+    public async ValueTask<bool> TryHandleAsync(
+        HttpContext context,
+        Exception exception,
+        CancellationToken cancellationToken)
+    {
+        var (statusCode, title) = exception switch
+        {
+            ArticleNotFoundException =>
+                (StatusCodes.Status404NotFound, "Article not found"),
+
+            AccessDeniedException =>
+                (StatusCodes.Status403Forbidden, "Access denied"),
+
+            _ =>
+                (StatusCodes.Status500InternalServerError, "Internal server error")
+        };
+
+        logger.LogError(
+            exception,
+            "An exception occurred. TraceId: {TraceId}",
+            context.TraceIdentifier);
+
+        context.Response.StatusCode = statusCode;
+
+        await context.Response.WriteAsJsonAsync(
+            new ProblemDetails
+            {
+                Status = statusCode,
+                Title = title,
+                Instance = context.Request.Path,
+                Extensions =
+                {
+                    ["traceId"] = context.TraceIdentifier
+                }
+            },
+            cancellationToken);
+
+        return true;
+    }
+}

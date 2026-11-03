@@ -1,6 +1,7 @@
 ﻿using LinguaCommunity.Application.Dtos.Mapping;
 using LinguaCommunity.Application.Dtos.Requests;
 using LinguaCommunity.Application.Dtos.Responses;
+using LinguaCommunity.Application.Exceptions;
 using LinguaCommunity.Application.Interfaces;
 using LinguaCommunity.Domain.Models.Articles;
 using LinguaCommunity.Domain.Models.Support;
@@ -33,11 +34,11 @@ public class ArticlesService(
 
     public async Task DeleteArticle(Guid authorId, Guid articleId, CancellationToken cancellationToken)
     {
-        var article = await articlesRepository.ReadArticleById(articleId, cancellationToken) ?? 
-            throw new InvalidOperationException($"Article with ID {articleId} not found."); // TODO: Consider creating a custom exception for this scenario.
+        var article = await articlesRepository.ReadArticleById(articleId, cancellationToken) ??
+            throw new ArticleNotFoundException(articleId);
 
         if (article.AuthorId.Id != authorId)
-            throw new InvalidOperationException($"User with ID {authorId} is not the author of the article with ID {articleId}.");// TODO: Consider creating a custom exception for this scenario.
+            throw new AccessDeniedException(authorId, articleId, "Only the author of an article can delete it.");
 
         articlesRepository.DeleteArticle(article);
 
@@ -46,8 +47,9 @@ public class ArticlesService(
 
     public async Task<ArticleDetailResponse?> GetArticleById(Guid articleId, CancellationToken cancellationToken)
     { 
-        var article = await articlesRepository.ReadArticleById(articleId, cancellationToken) ?? 
-            throw new InvalidOperationException($"Article with ID {articleId} not found."); // TODO: Consider creating a custom exception for this scenario.
+        var article = await articlesRepository.ReadArticleById(articleId, cancellationToken) ??
+            throw new ArticleNotFoundException(articleId);
+
         var author = await userRepository.ReadUserById(article.AuthorId, cancellationToken) ?? 
             throw new InvalidOperationException($"Author with ID {article.AuthorId} not found."); // TODO: Consider creating a custom exception for this scenario.
 
@@ -65,10 +67,10 @@ public class ArticlesService(
     public async Task UpdateArticle(Guid articleId, Guid authorId, UpdateArticleRequest articleData, CancellationToken cancellationToken)
     {
         var article = await articlesRepository.GetArticleById(articleId, cancellationToken) ?? 
-            throw new InvalidOperationException($"Article with ID {articleId} not found."); // TODO: Consider creating a custom exception for this scenario.
+            throw new ArticleNotFoundException(articleId);
 
         if (article.AuthorId.Id != authorId)
-            throw new InvalidOperationException($"User with ID {authorId} is not the author of the article with ID {articleId}.");// TODO: Consider creating a custom exception for this scenario.
+            throw new AccessDeniedException(authorId, articleId, "Only the author of an article can update it.");
 
         article.Update(articleData.Title, articleData.Content);
 

@@ -1,3 +1,4 @@
+using LinguaCommunity.Api.Handling;
 using LinguaCommunity.Application.Extensions;
 using LinguaCommunity.Infrastructure.Extensions;
 
@@ -14,7 +15,9 @@ if (!builder.Environment.IsProduction())
 }
 
 builder.Services.AddControllers();
-builder.Services.AddLogging();
+builder.Services.AddLogging(); 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 builder.AddApplication();
 builder.AddInfrastructure();
@@ -26,6 +29,8 @@ if (!app.Environment.IsProduction())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseExceptionHandler();
 
 app.UseAuthorization();
 app.MapControllers();
