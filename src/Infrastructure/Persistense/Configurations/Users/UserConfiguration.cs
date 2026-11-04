@@ -17,5 +17,28 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 id => id.Id,
                 value => new UserId(value))
             .ValueGeneratedNever();
+
+        builder.Property(u => u.Email)
+            .HasConversion(
+                email => email.Value,
+                value => new Email(value))
+            .IsRequired()
+            .HasMaxLength(256);
+
+        builder.HasIndex(u => u.Email)
+            .IsUnique();
+
+        builder.Property(u => u.Nickname)
+            .HasConversion(
+                nickname => nickname.Value,
+                value => new Nickname(value))
+            .IsRequired()
+            .HasMaxLength(100);
+
+        builder.HasIndex(u => u.Nickname)
+            .IsUnique();
+
+        builder.Property(u => u.PasswordHash)
+            .IsRequired();
     }
 }

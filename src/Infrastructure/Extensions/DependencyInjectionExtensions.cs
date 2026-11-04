@@ -1,4 +1,5 @@
 ﻿using LinguaCommunity.Application.Interfaces;
+using LinguaCommunity.Infrastructure.Authentication;
 using LinguaCommunity.Infrastructure.Persistense;
 using LinguaCommunity.Infrastructure.Persistense.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,7 @@ public static class DependencyInjectionExtensions
             options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres"));
         });
 
+        builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
         builder.Services.AddScoped<IArticlesRepository,ArticlesRepository>();
         builder.Services.AddScoped<IUsersRepository,UsersRepository>();
 
