@@ -6,6 +6,17 @@ namespace LinguaCommunity.Infrastructure.Persistense.Repositories;
 
 public class UsersRepository(ArticlesContext context) : IUsersRepository
 {
+    public void Add(User user) =>
+        context.Users.Add(user);
+
+    public Task<bool> ExistsEmail(Email email, CancellationToken cancellationToken) =>
+        context.Users
+            .AnyAsync(u => u.Email == email, cancellationToken);
+
+    public Task<bool> ExistsNickname(Nickname nickname, CancellationToken cancellationToken) =>
+        context.Users
+            .AnyAsync(u => u.Nickname == nickname, cancellationToken);
+
     public async Task<User?> ReadUserById(UserId authorId, CancellationToken cancellationToken) =>
         await context.Users
             .AsNoTracking()
