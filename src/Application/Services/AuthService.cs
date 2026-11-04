@@ -8,7 +8,6 @@ using System.ComponentModel.DataAnnotations;
 namespace LinguaCommunity.Application.Services;
 
 public class AuthService(
-    ILogger<AuthService> logger,
     IUsersRepository usersRepository,
     IPasswordHasher passwordHasher,
     ITokenService tokenService,

@@ -3,7 +3,7 @@ using LinguaCommunity.Application.Dtos.Responses;
 using LinguaCommunity.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LinguaCommunity.Api.Requests;
+namespace LinguaCommunity.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
