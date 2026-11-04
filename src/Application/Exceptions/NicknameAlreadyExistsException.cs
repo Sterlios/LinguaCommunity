@@ -1,7 +1,9 @@
-﻿namespace LinguaCommunity.Application.Exceptions;
+﻿using LinguaCommunity.Domain.Models.Users;
 
-public class NicknameAlreadyExistsException(string nickname)
-    : Exception($"Nickname '{nickname}' already exists.")
+namespace LinguaCommunity.Application.Exceptions;
+
+public class NicknameAlreadyExistsException(Nickname nickname)
+    : Exception($"Nickname '{nickname.NormalizedValue}' already exists.")
 {
-    public string Nickname { get; } = nickname;
+    public Nickname Nickname { get; } = nickname;
 }
