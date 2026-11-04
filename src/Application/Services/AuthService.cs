@@ -1,4 +1,5 @@
 ﻿using LinguaCommunity.Application.Dtos.Requests;
+using LinguaCommunity.Application.Exceptions;
 using LinguaCommunity.Application.Interfaces;
 using LinguaCommunity.Domain.Models.Users;
 using Microsoft.Extensions.Logging;
@@ -13,6 +14,11 @@ public class AuthService(
     ITokenService tokenService,
     IUnitOfWork unitOfWork )
 {
+    public async Task LoginUser(LoginRequest request, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task RegisterUser(RegisterRequest request, CancellationToken cancellationToken)
     {
         if (request.Password != request.PasswordConfirmation)
@@ -38,7 +44,7 @@ public class AuthService(
             name: name
         );
 
-        usersRepository.AddUser(user);
+        usersRepository.Add(user);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }
