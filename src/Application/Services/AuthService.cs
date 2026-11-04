@@ -42,14 +42,12 @@ public class AuthService(
         if (await usersRepository.ExistsNickname(nickname, cancellationToken))
             throw new NicknameAlreadyExistsException(nickname);
 
-        var name = new Name(request.FirstName, request.LastName);
         var hashedPassword = passwordHasher.HashPassword(request.Password);
 
         var user = new User(
             email: email,
             passwordHash: hashedPassword,
-            nickname: nickname,
-            name: name
+            nickname: nickname
         );
 
         usersRepository.Add(user); 

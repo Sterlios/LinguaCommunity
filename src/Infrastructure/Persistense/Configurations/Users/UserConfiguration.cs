@@ -17,9 +17,5 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 id => id.Id,
                 value => new UserId(value))
             .ValueGeneratedNever();
-
-        builder.Property(u => u.Name)
-            .IsRequired()
-            .HasMaxLength(100);
     }
 }

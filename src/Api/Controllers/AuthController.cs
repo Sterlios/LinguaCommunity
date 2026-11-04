@@ -20,6 +20,6 @@ public class AuthController(AuthService authService) : ControllerBase
     public async Task<ActionResult<AuthResponse>> Login(LoginRequest request, CancellationToken cancellationToken)
     {
         var authResponse = await authService.LoginUser(request, cancellationToken);
-        return Created(authResponse);
+        return Created("/api/auth/login", authResponse);
     }
 }
