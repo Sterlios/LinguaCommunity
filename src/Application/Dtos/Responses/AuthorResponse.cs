@@ -3,5 +3,5 @@
 public record AuthorResponse
 (
     Guid Id,
-    string Name
+    string Nickname
 );

@@ -16,7 +16,7 @@ public class AuthService(
 {
     public async Task<AuthResponse> LoginUser(LoginRequest request, CancellationToken cancellationToken)
     {
-        var email = new Email(request.Email);
+        var email = new Email(request.Email);// TODO: Некорректный формат email должен быть обработан на уровне API (FluentValidator)
         var user = await usersRepository.ReadUserByEmail(email, cancellationToken);
 
         if (user == null || !passwordHasher.VerifyPassword(request.Password, user.PasswordHash))
@@ -29,7 +29,7 @@ public class AuthService(
 
     public async Task RegisterUser(RegisterRequest request, CancellationToken cancellationToken)
     {
-        if (request.Password != request.PasswordConfirmation)
+        if (request.Password != request.PasswordConfirmation) //TODO : вынести в отдельный валидатор в слой API (FluentValidator)
             throw new ValidationException("Passwords do not match.");
 
         var email = new Email(request.Email);
@@ -52,8 +52,8 @@ public class AuthService(
             name: name
         );
 
-        usersRepository.Add(user);
+        usersRepository.Add(user); 
 
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken); // TODO: предусмотреть race condition, когда два запроса на регистрацию с одинаковым email приходят одновременно
     }
 }

@@ -13,7 +13,7 @@ if (builder.Environment.EnvironmentName == "Local")
 
 if (!builder.Environment.IsProduction())
 {
-    builder.Services.AddSwaggerGen();
+    builder.Services.AddSwaggerGen();// TODO: добавить авторизацию в Swagger
 }
 
 builder.Services.AddControllers();
