@@ -1,5 +1,8 @@
+using LinguaCommunity.Api.Handling;
 using LinguaCommunity.Application.Extensions;
 using LinguaCommunity.Infrastructure.Extensions;
+using LinguaCommunity.Infrastructure.Persistense;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,10 +17,21 @@ if (!builder.Environment.IsProduction())
 }
 
 builder.Services.AddControllers();
-builder.Services.AddApplication();
-builder.Services.AddInfrastructure();
+builder.Services.AddLogging(); 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
+builder.AddApplication();
+builder.AddInfrastructure();
 
 var app = builder.Build();
+
+if (!app.Environment.IsProduction())
+{
+    using var scope = app.Services.CreateScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<ArticlesContext>();
+    dbContext.Database.Migrate();
+}
 
 if (!app.Environment.IsProduction())
 {
@@ -25,7 +39,8 @@ if (!app.Environment.IsProduction())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseExceptionHandler();
+
 app.UseAuthorization();
 app.MapControllers();
 
