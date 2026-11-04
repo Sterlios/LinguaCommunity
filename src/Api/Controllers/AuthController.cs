@@ -12,7 +12,7 @@ public class AuthController(AuthService authService) : ControllerBase
     public async Task<IActionResult> Register(RegisterRequest request, CancellationToken cancellationToken)
     {
         await authService.RegisterUser(request, cancellationToken);
-        return Ok();
+        return Created();
     }
 
     [HttpPost("login")]

@@ -5,5 +5,6 @@ public record RegisterRequest(
     string Password, 
     string PasswordConfirmation, 
     string Nickname, 
-    string FirstName
-    );
+    string FirstName,
+    string LastName
+);
