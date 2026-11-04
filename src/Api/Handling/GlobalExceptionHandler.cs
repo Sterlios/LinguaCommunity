@@ -15,10 +15,12 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
         {
             ArticleNotFoundException =>
                 (StatusCodes.Status404NotFound, "Article not found"),
-
             AccessDeniedException =>
                 (StatusCodes.Status403Forbidden, "Access denied"),
-
+            NicknameAlreadyExistsException =>
+                (StatusCodes.Status409Conflict, "Nickname already exists"),
+            EmailAlreadyExistsException =>
+                (StatusCodes.Status409Conflict, "Email already exists"),
             _ =>
                 (StatusCodes.Status500InternalServerError, "Internal server error")
         };
