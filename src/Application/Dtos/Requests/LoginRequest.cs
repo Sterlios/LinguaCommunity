@@ -1,5 +1,6 @@
 ﻿namespace LinguaCommunity.Application.Dtos.Requests;
 
-public class LoginRequest
-{
-}
+public record LoginRequest(
+    string Email, 
+    string Password
+);

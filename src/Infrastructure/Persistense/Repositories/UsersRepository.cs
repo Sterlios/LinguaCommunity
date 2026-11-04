@@ -17,6 +17,11 @@ public class UsersRepository(ArticlesContext context) : IUsersRepository
         context.Users
             .AnyAsync(u => u.Nickname == nickname, cancellationToken);
 
+    public Task<User?> ReadUserByEmail(Email email, CancellationToken cancellationToken) =>
+        context.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+
     public async Task<User?> ReadUserById(UserId authorId, CancellationToken cancellationToken) =>
         await context.Users
             .AsNoTracking()

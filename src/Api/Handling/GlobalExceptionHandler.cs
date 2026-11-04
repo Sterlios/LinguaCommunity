@@ -21,6 +21,8 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
                 (StatusCodes.Status409Conflict, "Nickname already exists"),
             EmailAlreadyExistsException =>
                 (StatusCodes.Status409Conflict, "Email already exists"),
+            InvalidLoginException =>
+                (StatusCodes.Status401Unauthorized, "Invalid email or password."),
             _ =>
                 (StatusCodes.Status500InternalServerError, "Internal server error")
         };

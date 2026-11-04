@@ -1,8 +1,9 @@
-﻿using LinguaCommunity.Application.Dtos.Requests;
+﻿using LinguaCommunity.Application.Dtos;
+using LinguaCommunity.Application.Dtos.Requests;
+using LinguaCommunity.Application.Dtos.Responses;
 using LinguaCommunity.Application.Exceptions;
 using LinguaCommunity.Application.Interfaces;
 using LinguaCommunity.Domain.Models.Users;
-using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 
 namespace LinguaCommunity.Application.Services;
@@ -11,11 +12,19 @@ public class AuthService(
     IUsersRepository usersRepository,
     IPasswordHasher passwordHasher,
     ITokenService tokenService,
-    IUnitOfWork unitOfWork )
+    IUnitOfWork unitOfWork)
 {
-    public async Task LoginUser(LoginRequest request, CancellationToken cancellationToken)
+    public async Task<AuthResponse> LoginUser(LoginRequest request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var email = new Email(request.Email);
+        var user = await usersRepository.ReadUserByEmail(email, cancellationToken);
+
+        if (user == null || !passwordHasher.VerifyPassword(request.Password, user.PasswordHash))
+            throw new InvalidLoginException();
+
+        var tokenPayload = new TokenPayload(user.Id);
+
+        return new AuthResponse(Token: tokenService.GenerateToken(tokenPayload)); // TODO: реализовать генерацию токена
     }
 
     public async Task RegisterUser(RegisterRequest request, CancellationToken cancellationToken)

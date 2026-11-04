@@ -1,4 +1,5 @@
 ﻿using LinguaCommunity.Application.Dtos.Requests;
+using LinguaCommunity.Application.Dtos.Responses;
 using LinguaCommunity.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +17,9 @@ public class AuthController(AuthService authService) : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginRequest request, CancellationToken cancellationToken)
+    public async Task<ActionResult<AuthResponse>> Login(LoginRequest request, CancellationToken cancellationToken)
     {
-        await authService.LoginUser(request, cancellationToken);
-        return Ok();
+        var authResponse = await authService.LoginUser(request, cancellationToken);
+        return Created(authResponse);
     }
 }
