@@ -40,8 +40,8 @@ public class ArticleConfiguration : IEntityTypeConfiguration<Article>
             .IsRequired();
 
         builder.HasOne<User>()
-               .WithMany()
-               .HasForeignKey(a => a.AuthorId)
-               .OnDelete(DeleteBehavior.Cascade);
+            .WithMany()
+            .HasForeignKey(a => a.AuthorId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
