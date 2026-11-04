@@ -1,6 +1,8 @@
 using LinguaCommunity.Api.Handling;
 using LinguaCommunity.Application.Extensions;
 using LinguaCommunity.Infrastructure.Extensions;
+using LinguaCommunity.Infrastructure.Persistense;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,13 @@ builder.AddApplication();
 builder.AddInfrastructure();
 
 var app = builder.Build();
+
+if (!app.Environment.IsProduction())
+{
+    using var scope = app.Services.CreateScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<ArticlesContext>();
+    dbContext.Database.Migrate();
+}
 
 if (!app.Environment.IsProduction())
 {
