@@ -44,7 +44,7 @@ public class ArticlesController(ArticlesService service) : ControllerBase
 
         await service.UpdateArticle(
             articleId: id, 
-            authorId: id, 
+            authorId: userId, 
             articleData: article, 
             cancellationToken);
 
