@@ -42,15 +42,7 @@ public static class DependencyInjectionExtensions
                 };
             });
 
-        builder.Configuration.Bind("JwtOptions", new JwtOptions(
-            SecretKey: builder.Configuration["JwtOptions:SecretKey"]
-                ?? throw new InvalidOperationException("JwtOptions:SecretKey is not configured"),
-            Issuer: builder.Configuration["JwtOptions:Issuer"]
-                ?? throw new InvalidOperationException("JwtOptions:Issuer is not configured"),
-            Audience: builder.Configuration["JwtOptions:Audience"]
-                ?? throw new InvalidOperationException("JwtOptions:Audience is not configured"),
-            ExpirationMinutes: int.Parse(builder.Configuration["JwtOptions:ExpirationMinutes"] ?? "60")
-        ));
+        builder.Configuration.GetSection("JwtOptions").Bind(new JwtOptions());
 
         return builder;
     }

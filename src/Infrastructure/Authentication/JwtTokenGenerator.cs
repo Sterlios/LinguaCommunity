@@ -8,7 +8,13 @@ using System.Text;
 
 namespace LinguaCommunity.Infrastructure.Authentication;
 
-public record JwtOptions(string SecretKey, string Issuer, string Audience, int ExpirationMinutes);
+public record JwtOptions
+{
+    public string SecretKey { get; set; } = null!;
+    public string Issuer { get; set; } = null!;
+    public string Audience { get; set; } = null!;
+    public int ExpirationMinutes { get; set; }
+}
 
 public class JwtTokenGenerator(IOptions<JwtOptions> options): ITokenService
 {
