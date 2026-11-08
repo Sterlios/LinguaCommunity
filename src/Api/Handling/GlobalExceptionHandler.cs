@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LinguaCommunity.Api.Handling;
 
-public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
+public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger): IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(
         HttpContext context,
@@ -30,7 +30,7 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
         logger.LogError(
             exception,
             "An exception occurred. TraceId: {TraceId}",
-            context.TraceIdentifier);
+            context.TraceIdentifier); //TODO: если статус код 500, то логировать как ошибку. Если 404, 403, 409, 401 - логировать как предупреждение.
 
         context.Response.StatusCode = statusCode;
 
