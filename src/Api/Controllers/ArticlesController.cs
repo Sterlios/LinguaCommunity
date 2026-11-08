@@ -30,7 +30,7 @@ public class ArticlesController(ArticlesService service): ControllerBase
     [Authorize]
     public async Task<IActionResult> CreateArticle(CreateArticleRequest article, CancellationToken cancellationToken = default)
     {
-        var userId = Guid.Empty; // TODO: Replace with actual user ID retrieval logic (e.g., from authentication context)
+        var userId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value);
 
         await service.CreateArticle(
             authorId: userId,
@@ -44,7 +44,7 @@ public class ArticlesController(ArticlesService service): ControllerBase
     [Authorize]
     public async Task<IActionResult> UpdateArticle(Guid id, UpdateArticleRequest article, CancellationToken cancellationToken = default)
     {
-        var userId = Guid.Empty; // TODO: Replace with actual user ID retrieval logic (e.g., from authentication context)
+        var userId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value);
 
         await service.UpdateArticle(
             articleId: id,
@@ -59,7 +59,7 @@ public class ArticlesController(ArticlesService service): ControllerBase
     [Authorize]
     public async Task<IActionResult> DeleteArticle(Guid id, CancellationToken cancellationToken = default)
     {
-        var userId = Guid.Empty; // TODO: Replace with actual user ID retrieval logic (e.g., from authentication context)
+        var userId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value);
 
         await service.DeleteArticle(
             authorId: userId,
