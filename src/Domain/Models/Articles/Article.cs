@@ -7,8 +7,6 @@ public record struct ArticleId(Guid Id);
 
 public class Article
 {
-    private Article(){} // Required by EF
-
     public Article(UserId authorId, string title, string content, Language language)
     {
         ArgumentException.ThrowIfNullOrEmpty(title);

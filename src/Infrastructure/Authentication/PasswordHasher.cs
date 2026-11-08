@@ -3,17 +3,17 @@ using Microsoft.AspNetCore.Identity;
 
 namespace LinguaCommunity.Infrastructure.Authentication;
 
-public class PasswordHasher : IPasswordHasher
+public class PasswordHasher: IPasswordHasher
 {
     private readonly PasswordHasher<object> _passwordHasher = new();
 
-    private static readonly object User = new();
+    private static readonly object s_user = new();
 
     public string HashPassword(string password)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(password);
 
-        return _passwordHasher.HashPassword(User, password);
+        return _passwordHasher.HashPassword(s_user, password);
     }
 
     public bool VerifyPassword(string password, string hashedPassword)
@@ -22,7 +22,7 @@ public class PasswordHasher : IPasswordHasher
         ArgumentException.ThrowIfNullOrWhiteSpace(hashedPassword);
 
         var result = _passwordHasher.VerifyHashedPassword(
-            User,
+            s_user,
             hashedPassword,
             password);
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LinguaCommunity.Infrastructure.Persistense;
+﻿namespace LinguaCommunity.Infrastructure.Persistense.Configurations;
 
 public enum Schema
 {

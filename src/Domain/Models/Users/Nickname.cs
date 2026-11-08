@@ -19,7 +19,7 @@ public sealed partial record Nickname
 
         value = value.Trim();
 
-        if (value.Length < MinLength || value.Length > MaxLength)
+        if (value.Length is < MinLength or > MaxLength)
             throw new ArgumentException($"Nickname must contain between {MinLength} and {MaxLength} characters.", nameof(value));
 
         if (!NicknameRegex().IsMatch(value))

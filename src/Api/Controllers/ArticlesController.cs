@@ -7,10 +7,10 @@ namespace LinguaCommunity.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ArticlesController(ArticlesService service) : ControllerBase
+public class ArticlesController(ArticlesService service): ControllerBase
 {
     [HttpGet]
-    public async Task<List<ArticlesItemResponse>> GetArticles(CancellationToken cancellationToken = default) => 
+    public async Task<List<ArticlesItemResponse>> GetArticles(CancellationToken cancellationToken = default) =>
         await service.GetArticles(cancellationToken);
 
     [HttpGet("{id}")]
@@ -18,10 +18,11 @@ public class ArticlesController(ArticlesService service) : ControllerBase
     {
         var article = await service.GetArticleById(id, cancellationToken);
 
-        if (article == null)
-            return NotFound();
-
-        return Ok(article);
+        return article switch
+        {
+            null => (ActionResult<ArticleDetailResponse>)NotFound(),
+            _ => (ActionResult<ArticleDetailResponse>)Ok(article),
+        };
     }
 
     [HttpPost]
@@ -30,8 +31,8 @@ public class ArticlesController(ArticlesService service) : ControllerBase
         var userId = Guid.Empty; // TODO: Replace with actual user ID retrieval logic (e.g., from authentication context)
 
         await service.CreateArticle(
-            authorId: userId, 
-            articleData: article, 
+            authorId: userId,
+            articleData: article,
             cancellationToken);
 
         return Created();
@@ -43,9 +44,9 @@ public class ArticlesController(ArticlesService service) : ControllerBase
         var userId = Guid.Empty; // TODO: Replace with actual user ID retrieval logic (e.g., from authentication context)
 
         await service.UpdateArticle(
-            articleId: id, 
-            authorId: userId, 
-            articleData: article, 
+            articleId: id,
+            authorId: userId,
+            articleData: article,
             cancellationToken);
 
         return NoContent();
@@ -57,8 +58,8 @@ public class ArticlesController(ArticlesService service) : ControllerBase
         var userId = Guid.Empty; // TODO: Replace with actual user ID retrieval logic (e.g., from authentication context)
 
         await service.DeleteArticle(
-            authorId: userId, 
-            articleId: id, 
+            authorId: userId,
+            articleId: id,
             cancellationToken: cancellationToken);
 
         return NoContent();
