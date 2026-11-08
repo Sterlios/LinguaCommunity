@@ -161,6 +161,7 @@ Set the connection string:
 
 ```
 dotnet user-secrets set "ConnectionStrings:Postgres" "Host=localhost;Port=5432;Database=lingua_community;Username=lingua_app;Password=YOUR_LOCAL_PASSWORD" --project src/Api/Api.csproj
+dotnet user-secrets set "JwtOptions:SecretKey" "Here_is_your_secret_key"
 ```
 
 Start only PostgreSQL:
@@ -187,6 +188,7 @@ POSTGRES_DB=lingua_community
 POSTGRES_USER=lingua_app
 POSTGRES_PASSWORD=local_dev_password_change_me
 POSTGRES_PORT=5432
+JWT_SECRET_KEY=your_secret_key_here
 ```
 
 Use a different password for your local environment if needed. Do not commit `.env` to the repository.
