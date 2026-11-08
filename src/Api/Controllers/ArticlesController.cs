@@ -1,6 +1,7 @@
 ﻿using LinguaCommunity.Application.Dtos.Requests;
 using LinguaCommunity.Application.Dtos.Responses;
 using LinguaCommunity.Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LinguaCommunity.Api.Controllers;
@@ -26,6 +27,7 @@ public class ArticlesController(ArticlesService service): ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> CreateArticle(CreateArticleRequest article, CancellationToken cancellationToken = default)
     {
         var userId = Guid.Empty; // TODO: Replace with actual user ID retrieval logic (e.g., from authentication context)
@@ -39,6 +41,7 @@ public class ArticlesController(ArticlesService service): ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> UpdateArticle(Guid id, UpdateArticleRequest article, CancellationToken cancellationToken = default)
     {
         var userId = Guid.Empty; // TODO: Replace with actual user ID retrieval logic (e.g., from authentication context)
@@ -53,6 +56,7 @@ public class ArticlesController(ArticlesService service): ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> DeleteArticle(Guid id, CancellationToken cancellationToken = default)
     {
         var userId = Guid.Empty; // TODO: Replace with actual user ID retrieval logic (e.g., from authentication context)
