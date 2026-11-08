@@ -34,7 +34,9 @@ public class ArticlesService(
 
     public async Task DeleteArticle(Guid authorId, Guid articleId, CancellationToken cancellationToken)
     {
-        var article = await articlesRepository.ReadArticleById(articleId, cancellationToken) ??
+        var articleVoId = new ArticleId(articleId);
+
+        var article = await articlesRepository.ReadArticleById(articleVoId, cancellationToken) ??
             throw new ArticleNotFoundException(articleId);
 
         if (article.AuthorId.Id != authorId)
@@ -47,7 +49,9 @@ public class ArticlesService(
 
     public async Task<ArticleDetailResponse?> GetArticleById(Guid articleId, CancellationToken cancellationToken)
     {
-        var article = await articlesRepository.ReadArticleById(articleId, cancellationToken) ??
+        var articleVoId = new ArticleId(articleId);
+
+        var article = await articlesRepository.ReadArticleById(articleVoId, cancellationToken) ??
             throw new ArticleNotFoundException(articleId);
 
         var author = await userRepository.ReadUserById(article.AuthorId, cancellationToken) ??
@@ -66,7 +70,9 @@ public class ArticlesService(
 
     public async Task UpdateArticle(Guid articleId, Guid authorId, UpdateArticleRequest articleData, CancellationToken cancellationToken)
     {
-        var article = await articlesRepository.GetArticleById(articleId, cancellationToken) ??
+        var articleVoId = new ArticleId(articleId);
+
+        var article = await articlesRepository.GetArticleById(articleVoId, cancellationToken) ??
             throw new ArticleNotFoundException(articleId);
 
         if (article.AuthorId.Id != authorId)
