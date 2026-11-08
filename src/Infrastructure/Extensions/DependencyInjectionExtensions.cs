@@ -42,7 +42,7 @@ public static class DependencyInjectionExtensions
                 };
             });
 
-        builder.Configuration.GetSection("JwtOptions").Bind(new JwtOptions());
+        builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
 
         return builder;
     }
