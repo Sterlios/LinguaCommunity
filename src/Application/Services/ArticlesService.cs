@@ -16,7 +16,7 @@ public class ArticlesService(
     IArticlesRepository articlesRepository,
     IUnitOfWork unitOfWork)
 {
-    public async Task CreateArticle(ILogger<ArticlesService> logger, Guid authorId, CreateArticleRequest articleData, CancellationToken cancellationToken)
+    public async Task CreateArticle(Guid authorId, CreateArticleRequest articleData, CancellationToken cancellationToken)
     {
         var article = new Article(
             authorId: new UserId(authorId),
