@@ -47,7 +47,7 @@ public class ArticlesService(
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<ArticleDetailResponse?> GetArticleById(Guid articleId, CancellationToken cancellationToken)
+    public async Task<ArticleDetailResponse> GetArticleById(Guid articleId, CancellationToken cancellationToken)
     {
         var articleVoId = new ArticleId(articleId);
 
@@ -57,7 +57,7 @@ public class ArticlesService(
         var author = await userRepository.ReadUserById(article.AuthorId, cancellationToken) ??
             throw new InvalidOperationException($"Author with ID {article.AuthorId} not found."); // TODO: Consider creating a custom exception for this scenario.
 
-        return article?.ToDetailResponse(author);
+        return article.ToDetailResponse(author);
     }
 
     public async Task<List<ArticlesItemResponse>> GetArticles(CancellationToken cancellationToken = default)
