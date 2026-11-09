@@ -16,7 +16,6 @@ if (!builder.Environment.IsProduction())
 {
     builder.Services.AddSwaggerGen(c =>
     {
-
         var securityScheme = new OpenApiSecurityScheme()
         {
             Name = "Authorization",

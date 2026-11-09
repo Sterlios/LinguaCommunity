@@ -2,6 +2,7 @@
 
 public record ArticlesItemResponse
 (
+    Guid Id,
     string Title,
     AuthorResponse Author,
     DateTime CreatedAt,

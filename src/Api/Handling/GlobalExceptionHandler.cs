@@ -27,10 +27,20 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger): IEx
                 (StatusCodes.Status500InternalServerError, "Internal server error")
         };
 
-        logger.LogError(
-            exception,
-            "An exception occurred. TraceId: {TraceId}",
-            context.TraceIdentifier); //TODO: если статус код 500, то логировать как ошибку. Если 404, 403, 409, 401 - логировать как предупреждение.
+        if (statusCode >= StatusCodes.Status500InternalServerError)
+        {
+            logger.LogError(
+                exception,
+                "An exception occurred. TraceId: {TraceId}",
+                context.TraceIdentifier);
+        }
+        else
+        {
+            logger.LogWarning(
+                exception.Message,
+                "An exception occurred. TraceId: {TraceId}",
+                context.TraceIdentifier);
+        }
 
         context.Response.StatusCode = statusCode;
 

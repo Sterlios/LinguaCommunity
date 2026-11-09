@@ -2,6 +2,7 @@
 
 public record ArticleDetailResponse
 (
+    Guid Id,
     string Title,
     string Content,
     AuthorResponse Author,
