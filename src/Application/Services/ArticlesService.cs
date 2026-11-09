@@ -16,7 +16,7 @@ public class ArticlesService(
     IArticlesRepository articlesRepository,
     IUnitOfWork unitOfWork)
 {
-    public async Task CreateArticle(Guid authorId, CreateArticleRequest articleData, CancellationToken cancellationToken)
+    public async Task CreateArticle(ILogger<ArticlesService> logger, Guid authorId, CreateArticleRequest articleData, CancellationToken cancellationToken)
     {
         var article = new Article(
             authorId: new UserId(authorId),
@@ -55,7 +55,7 @@ public class ArticlesService(
             throw new ArticleNotFoundException(articleId);
 
         var author = await userRepository.ReadUserById(article.AuthorId, cancellationToken) ??
-            throw new InvalidOperationException($"Author with ID {article.AuthorId} not found."); // TODO: Consider creating a custom exception for this scenario.
+            throw new InvalidOperationException($"Author with ID {article.AuthorId} not found.");
 
         return article.ToDetailResponse(author);
     }
@@ -63,9 +63,25 @@ public class ArticlesService(
     public async Task<List<ArticlesItemResponse>> GetArticles(CancellationToken cancellationToken = default)
     {
         var articles = await articlesRepository.ReadArticles(cancellationToken);
-        var authors = await userRepository.ReadUsersByIds([.. articles.Select(a => a.AuthorId)], cancellationToken);
+        var articlesAuthorIds = articles.Select(a => a.AuthorId).Distinct().ToList();
 
-        return [.. articles.Select(a => a.ToItemResponse(authors.First(u => u.Id == a.AuthorId)))];
+        var authors = await userRepository.ReadUsersByIds(articlesAuthorIds, cancellationToken);
+
+        if (authors.Count != articlesAuthorIds.Count)
+        {
+            var missingAuthorIds = articlesAuthorIds
+                .Where(authorId => !authors.Any(u => u.Id == authorId))
+                .Select(authorId => authorId.Id)
+                .ToList();
+
+            logger.LogWarning(
+                "Some authors were not found for the retrieved articles. Missing Author IDs: {MissingAuthorIds}",
+                string.Join(", ", missingAuthorIds));
+        }
+
+        return [.. articles
+            .Where(a => authors.Any(x => x.Id == a.AuthorId))
+            .Select(a => a.ToItemResponse(authors.First(u => u.Id == a.AuthorId)))];
     }
 
     public async Task UpdateArticle(Guid articleId, Guid authorId, UpdateArticleRequest articleData, CancellationToken cancellationToken)
