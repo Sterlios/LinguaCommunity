@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LinguaCommunity.Api.Controllers;
 
+//TODO: Add validation for RegisterRequest and LoginRequest using FluentValidation 
+
 [Route("api/[controller]")]
 [ApiController]
-public class AuthController(AuthService authService) : ControllerBase
+public class AuthController(AuthService authService): ControllerBase
 {
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterRequest request, CancellationToken cancellationToken)

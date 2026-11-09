@@ -24,7 +24,7 @@ public class AuthService(
 
         var tokenPayload = new TokenPayload(user.Id);
 
-        return new AuthResponse(Token: tokenService.GenerateToken(tokenPayload)); // TODO: реализовать генерацию токена
+        return new AuthResponse(Token: tokenService.GenerateToken(tokenPayload));
     }
 
     public async Task RegisterUser(RegisterRequest request, CancellationToken cancellationToken)
@@ -50,7 +50,7 @@ public class AuthService(
             nickname: nickname
         );
 
-        usersRepository.Add(user); 
+        usersRepository.Add(user);
 
         await unitOfWork.SaveChangesAsync(cancellationToken); // TODO: предусмотреть race condition, когда два запроса на регистрацию с одинаковым email приходят одновременно
     }
