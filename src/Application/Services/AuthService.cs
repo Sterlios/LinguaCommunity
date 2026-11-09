@@ -4,7 +4,6 @@ using LinguaCommunity.Application.Dtos.Responses;
 using LinguaCommunity.Application.Exceptions;
 using LinguaCommunity.Application.Interfaces;
 using LinguaCommunity.Domain.Models.Users;
-using System.ComponentModel.DataAnnotations;
 
 namespace LinguaCommunity.Application.Services;
 
@@ -16,7 +15,7 @@ public class AuthService(
 {
     public async Task<AuthResponse> LoginUser(LoginRequest request, CancellationToken cancellationToken)
     {
-        var email = new Email(request.Email);// TODO: Некорректный формат email должен быть обработан на уровне API (FluentValidator)
+        var email = new Email(request.Email);
         var user = await usersRepository.ReadUserByEmail(email, cancellationToken);
 
         if (user == null || !passwordHasher.VerifyPassword(request.Password, user.PasswordHash))
@@ -29,9 +28,6 @@ public class AuthService(
 
     public async Task RegisterUser(RegisterRequest request, CancellationToken cancellationToken)
     {
-        if (request.Password != request.PasswordConfirmation) //TODO : вынести в отдельный валидатор в слой API (FluentValidator)
-            throw new ValidationException("Passwords do not match.");
-
         var email = new Email(request.Email);
 
         if (await usersRepository.ExistsEmail(email, cancellationToken))
