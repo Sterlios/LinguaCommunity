@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LinguaCommunity.Api.Handling;
 
-public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
+public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger): IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(
         HttpContext context,
@@ -15,18 +15,32 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
         {
             ArticleNotFoundException =>
                 (StatusCodes.Status404NotFound, "Article not found"),
-
             AccessDeniedException =>
                 (StatusCodes.Status403Forbidden, "Access denied"),
-
+            NicknameAlreadyExistsException =>
+                (StatusCodes.Status409Conflict, "Nickname already exists"),
+            EmailAlreadyExistsException =>
+                (StatusCodes.Status409Conflict, "Email already exists"),
+            InvalidLoginException =>
+                (StatusCodes.Status401Unauthorized, "Invalid email or password."),
             _ =>
                 (StatusCodes.Status500InternalServerError, "Internal server error")
         };
 
-        logger.LogError(
-            exception,
-            "An exception occurred. TraceId: {TraceId}",
-            context.TraceIdentifier);
+        if (statusCode >= StatusCodes.Status500InternalServerError)
+        {
+            logger.LogError(
+                exception,
+                "An exception occurred. TraceId: {TraceId}",
+                context.TraceIdentifier);
+        }
+        else
+        {
+            logger.LogWarning(
+                exception.Message,
+                "An exception occurred. TraceId: {TraceId}",
+                context.TraceIdentifier);
+        }
 
         context.Response.StatusCode = statusCode;
 

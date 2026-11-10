@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 namespace LinguaCommunity.Application.Services;
 
 public class ArticlesService(
-    ILogger<ArticlesService> logger, 
+    ILogger<ArticlesService> logger,
     IUsersRepository userRepository,
     IArticlesRepository articlesRepository,
     IUnitOfWork unitOfWork)
@@ -34,7 +34,9 @@ public class ArticlesService(
 
     public async Task DeleteArticle(Guid authorId, Guid articleId, CancellationToken cancellationToken)
     {
-        var article = await articlesRepository.ReadArticleById(articleId, cancellationToken) ??
+        var articleVoId = new ArticleId(articleId);
+
+        var article = await articlesRepository.ReadArticleById(articleVoId, cancellationToken) ??
             throw new ArticleNotFoundException(articleId);
 
         if (article.AuthorId.Id != authorId)
@@ -45,28 +47,48 @@ public class ArticlesService(
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<ArticleDetailResponse?> GetArticleById(Guid articleId, CancellationToken cancellationToken)
-    { 
-        var article = await articlesRepository.ReadArticleById(articleId, cancellationToken) ??
+    public async Task<ArticleDetailResponse> GetArticleById(Guid articleId, CancellationToken cancellationToken)
+    {
+        var articleVoId = new ArticleId(articleId);
+
+        var article = await articlesRepository.ReadArticleById(articleVoId, cancellationToken) ??
             throw new ArticleNotFoundException(articleId);
 
-        var author = await userRepository.ReadUserById(article.AuthorId, cancellationToken) ?? 
-            throw new InvalidOperationException($"Author with ID {article.AuthorId} not found."); // TODO: Consider creating a custom exception for this scenario.
+        var author = await userRepository.ReadUserById(article.AuthorId, cancellationToken) ??
+            throw new InvalidOperationException($"Author with ID {article.AuthorId} not found.");
 
-        return article?.ToDetailResponse(author);
+        return article.ToDetailResponse(author);
     }
 
     public async Task<List<ArticlesItemResponse>> GetArticles(CancellationToken cancellationToken = default)
     {
         var articles = await articlesRepository.ReadArticles(cancellationToken);
-        var authors = await userRepository.ReadUsersByIds(articles.Select(a => a.AuthorId).ToList(), cancellationToken);
+        var articlesAuthorIds = articles.Select(a => a.AuthorId).Distinct().ToList();
 
-        return articles.Select(a => a.ToItemResponse(authors.First(u => u.Id == a.AuthorId))).ToList();
-    } 
+        var authors = await userRepository.ReadUsersByIds(articlesAuthorIds, cancellationToken);
+
+        if (authors.Count != articlesAuthorIds.Count)
+        {
+            var missingAuthorIds = articlesAuthorIds
+                .Where(authorId => !authors.Any(u => u.Id == authorId))
+                .Select(authorId => authorId.Id)
+                .ToList();
+
+            logger.LogWarning(
+                "Some authors were not found for the retrieved articles. Missing Author IDs: {MissingAuthorIds}",
+                string.Join(", ", missingAuthorIds));
+        }
+
+        return [.. articles
+            .Where(a => authors.Any(x => x.Id == a.AuthorId))
+            .Select(a => a.ToItemResponse(authors.First(u => u.Id == a.AuthorId)))];
+    }
 
     public async Task UpdateArticle(Guid articleId, Guid authorId, UpdateArticleRequest articleData, CancellationToken cancellationToken)
     {
-        var article = await articlesRepository.GetArticleById(articleId, cancellationToken) ?? 
+        var articleVoId = new ArticleId(articleId);
+
+        var article = await articlesRepository.GetArticleById(articleVoId, cancellationToken) ??
             throw new ArticleNotFoundException(articleId);
 
         if (article.AuthorId.Id != authorId)

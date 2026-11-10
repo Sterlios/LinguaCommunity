@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LinguaCommunity.Infrastructure.Persistense.Configurations.Articles;
 
-public class ArticleConfiguration : IEntityTypeConfiguration<Article>
+public class ArticleConfiguration: IEntityTypeConfiguration<Article>
 {
     public void Configure(EntityTypeBuilder<Article> builder)
     {
@@ -30,7 +30,7 @@ public class ArticleConfiguration : IEntityTypeConfiguration<Article>
         builder.Property(a => a.Language)
             .IsRequired()
             .HasConversion(
-                language => nameof(language),
+                language => language.ToString(),
                 value => Enum.Parse<Language>(value));
 
         builder.Property(a => a.Version)

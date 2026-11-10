@@ -1,14 +1,12 @@
 ﻿using LinguaCommunity.Domain.Models.Support;
-using LinguaCommunity.Domain.Models.Translations;
 using LinguaCommunity.Domain.Models.Users;
 
 namespace LinguaCommunity.Domain.Models.Articles;
 
 public record struct ArticleId(Guid Id);
+
 public class Article
 {
-    private Article(){} // Required by EF
-
     public Article(UserId authorId, string title, string content, Language language)
     {
         ArgumentException.ThrowIfNullOrEmpty(title);

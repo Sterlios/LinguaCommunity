@@ -7,23 +7,25 @@ namespace LinguaCommunity.Application.Dtos.Mapping;
 public static class ArticleMapping
 {
     public static ArticleDetailResponse ToDetailResponse(this Article article, User author) =>
-        new ArticleDetailResponse(
+        new(
+            Id: article.Id.Id,
             Title: article.Title,
             Content: article.Content,
             Author: new AuthorResponse(
                 Id: author.Id.Id,
-                Name: author.Name
+                Nickname: author.Nickname.Value
             ),
             CreatedAt: article.CreatedAt,
             UpdatedAt: article.UpdatedAt
         );
 
     public static ArticlesItemResponse ToItemResponse(this Article article, User author) =>
-        new ArticlesItemResponse(
+        new(
+            Id: article.Id.Id,
             Title: article.Title,
             Author: new AuthorResponse(
                 Id: author.Id.Id,
-                Name: author.Name
+                Nickname: author.Nickname.Value
             ),
             CreatedAt: article.CreatedAt,
             UpdatedAt: article.UpdatedAt
