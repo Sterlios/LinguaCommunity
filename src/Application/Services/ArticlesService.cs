@@ -14,6 +14,7 @@ public class ArticlesService(
     ILogger<ArticlesService> logger,
     IUsersRepository userRepository,
     IArticlesRepository articlesRepository,
+    TranslationService translationService,
     IUnitOfWork unitOfWork)
 {
     public async Task CreateArticle(Guid authorId, CreateArticleRequest articleData, CancellationToken cancellationToken)
@@ -26,6 +27,8 @@ public class ArticlesService(
             );
 
         articlesRepository.AddArticle(article);
+
+        await translationService.CreateTasks(article, cancellationToken);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
