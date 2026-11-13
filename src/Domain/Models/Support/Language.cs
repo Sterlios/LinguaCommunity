@@ -1,6 +1,6 @@
 ﻿namespace LinguaCommunity.Domain.Models.Support;
 
-public record LanguageId(Guid Guid){}
+public record LanguageId(Guid Id){}
 public class Language(string name)
 {
     public LanguageId Id { get; } = new LanguageId(Guid.CreateVersion7());

@@ -14,7 +14,7 @@ public class LanguageConfiguration: IEntityTypeConfiguration<Language>
 
         builder.Property(l => l.Id)
             .HasConversion(
-                id => id.Guid,
+                id => id.Id,
                 value => new LanguageId(value))
             .ValueGeneratedNever();
 
