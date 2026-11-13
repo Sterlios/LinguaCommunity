@@ -14,6 +14,7 @@ public class ArticlesService(
     ILogger<ArticlesService> logger,
     IUsersRepository userRepository,
     IArticlesRepository articlesRepository,
+    TranslationService translationService,
     IUnitOfWork unitOfWork)
 {
     public async Task CreateArticle(Guid authorId, CreateArticleRequest articleData, CancellationToken cancellationToken)
@@ -22,10 +23,12 @@ public class ArticlesService(
             authorId: new UserId(authorId),
             title: articleData.Title,
             content: articleData.Content,
-            language: Enum.Parse<Language>(articleData.Language)
+            languageId: new LanguageId(articleData.LanguageId)
             );
 
         articlesRepository.AddArticle(article);
+
+        await translationService.CreateTasks(article, cancellationToken);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

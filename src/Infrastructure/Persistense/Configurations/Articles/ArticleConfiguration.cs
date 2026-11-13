@@ -27,11 +27,10 @@ public class ArticleConfiguration: IEntityTypeConfiguration<Article>
         builder.Property(a => a.Content)
             .IsRequired();
 
-        builder.Property(a => a.Language)
-            .IsRequired()
-            .HasConversion(
-                language => language.ToString(),
-                value => Enum.Parse<Language>(value));
+        builder.HasOne<Language>()
+            .WithMany()
+            .HasForeignKey(a => a.LanguageId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.Property(a => a.Version)
             .IsRequired();

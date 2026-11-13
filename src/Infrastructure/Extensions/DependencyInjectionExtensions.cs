@@ -21,6 +21,8 @@ public static class DependencyInjectionExtensions
         builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
         builder.Services.AddScoped<IArticlesRepository, ArticlesRepository>();
         builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+        builder.Services.AddScoped<ITranslationRepository, TranslationsRepository>();
+        builder.Services.AddScoped<ILanguageRepository, LanguageRepository>();
         builder.Services.AddScoped<ITokenService, JwtTokenGenerator>();
 
         builder.Services.AddAuthentication()
