@@ -18,4 +18,8 @@ public class User
     public Email Email { get; private set; }
     public Nickname Nickname { get; }
     public string PasswordHash { get; private set; }
+    public Role Role { get; private set; } = Role.User;
+
+    public void ChangeRole(Role newRole) => 
+        Role = newRole;
 }

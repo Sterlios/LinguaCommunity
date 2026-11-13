@@ -2,4 +2,4 @@
 
 namespace LinguaCommunity.Application.Dtos;
 
-public record TokenPayload(UserId UserId);
+public record TokenPayload(UserId UserId, Role Role);

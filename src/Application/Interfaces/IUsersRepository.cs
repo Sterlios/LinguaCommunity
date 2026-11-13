@@ -10,4 +10,6 @@ public interface IUsersRepository
     Task<bool> ExistsEmail(Email email, CancellationToken cancellationToken);
     Task<bool> ExistsNickname(Nickname nickname, CancellationToken cancellationToken);
     void Add(User user);
+    Task<bool> HasAnyUsers(CancellationToken cancellationToken);
+    Task<User?> GetUserById(UserId userId, CancellationToken cancellationToken);
 }
