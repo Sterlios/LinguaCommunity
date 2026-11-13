@@ -6,12 +6,12 @@ namespace LinguaCommunity.Domain.Models.Translations;
 
 public record struct TranslationId(Guid Id);
 
-public class Translation(Article article, Language language)
+public class Translation
 {
     public TranslationId Id { get; } = new TranslationId(Guid.CreateVersion7());
-    public ArticleId ArticleId { get; } = article.Id;
-    public int SourceVersion { get; } = article.Version;
-    public Language Language { get; } = language;
+    public ArticleId ArticleId { get; }
+    public int SourceVersion { get; }
+    public LanguageId LanguageId { get; }
     public TaskStatus Status { get; private set; } = TaskStatus.Pending;
     public string Title { get; private set; } = null!;
     public string Content { get; private set; } = null!;
@@ -20,4 +20,13 @@ public class Translation(Article article, Language language)
     public DateTime? UpdatedAt { get; private set; }
     public DateTime? CompletedAt { get; private set; }
     public DateTime? NextTryAt { get; private set; }
+
+    private Translation() { }
+
+    public Translation(Article article, LanguageId languageId)
+    {
+        ArticleId = article.Id;
+        SourceVersion = article.Version;
+        LanguageId = languageId;
+    }
 }

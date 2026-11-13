@@ -1,6 +1,4 @@
-﻿using LinguaCommunity.Application.Dtos.Requests;
-using LinguaCommunity.Application.Dtos.Responses;
-using LinguaCommunity.Application.Interfaces;
+﻿using LinguaCommunity.Application.Interfaces;
 using LinguaCommunity.Domain.Models.Articles;
 using LinguaCommunity.Domain.Models.Translations;
 
@@ -16,9 +14,9 @@ public class TranslationService(
         
         foreach (var targetLanguage in targetLanguages)
         {
-            if (targetLanguage != article.Language)
+            if (targetLanguage.Id != article.LanguageId && targetLanguage.IsEnabled)
             {
-                var translation = new Translation(article, targetLanguage);
+                var translation = new Translation(article, targetLanguage.Id);
                 translationRepository.AddTranslation(translation);
             }
         }

@@ -10,6 +10,7 @@ public static class DependencyInjectionExtensions
     {
         builder.Services.AddScoped<AuthService>();
         builder.Services.AddScoped<ArticlesService>();
+        builder.Services.AddScoped<TranslationService>();
 
         return builder;
     }

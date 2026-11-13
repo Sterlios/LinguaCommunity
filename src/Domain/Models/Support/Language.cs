@@ -1,7 +1,9 @@
 ﻿namespace LinguaCommunity.Domain.Models.Support;
 
-public enum Language
+public record LanguageId(Guid Guid){}
+public class Language(string name)
 {
-    English,
-    Russian
+    public LanguageId Id { get; } = new LanguageId(Guid.CreateVersion7());
+    public string Name { get; } = name;
+    public bool IsEnabled { get; private set; } = true;
 }

@@ -23,7 +23,7 @@ public class ArticlesService(
             authorId: new UserId(authorId),
             title: articleData.Title,
             content: articleData.Content,
-            language: Enum.Parse<Language>(articleData.Language)
+            languageId: new LanguageId(articleData.LanguageId)
             );
 
         articlesRepository.AddArticle(article);
