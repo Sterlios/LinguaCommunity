@@ -1,6 +1,7 @@
-﻿using LinguaCommunity.Application.Dtos.Requests;
+﻿using LinguaCommunity.Api.Authorization;
+using LinguaCommunity.Application.Dtos.Requests;
 using LinguaCommunity.Application.Services;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LinguaCommunity.Api.Controllers;
@@ -10,6 +11,7 @@ namespace LinguaCommunity.Api.Controllers;
 public class UsersController(UsersService usersService): ControllerBase
 {
     [HttpPut]
+    [Authorize(Policy = Policies.AdminOnly)]
     public async Task<IActionResult> ChangeRole(UserChangeRole request, CancellationToken cancellationToken)
     {
         var authorId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value ?? Guid.Empty.ToString());
