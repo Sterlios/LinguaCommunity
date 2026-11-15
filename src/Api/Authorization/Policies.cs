@@ -5,5 +5,5 @@ namespace LinguaCommunity.Api.Authorization;
 public class Policies
 {
     public const string AdminOnly = "AdminOnly";
-    public static string[] AllowedAdmin = [ Role.Admin.ToString() ];
+    public static string[] AllowedAdmin = [ Role.Admin.ToString() ]; //TODO выглядит как костыль, но пока что так (нормально ли, что Api залезает в Domain?)
 }
