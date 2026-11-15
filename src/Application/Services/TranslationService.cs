@@ -10,7 +10,7 @@ public class TranslationService(
 {
     public async Task CreateTasks(Article article, CancellationToken cancellationToken)
     {
-        var targetLanguages = await languageRepository.GetAllLanguages(cancellationToken);
+        var targetLanguages = await languageRepository.GetLanguages(cancellationToken);
         
         foreach (var targetLanguage in targetLanguages)
         {

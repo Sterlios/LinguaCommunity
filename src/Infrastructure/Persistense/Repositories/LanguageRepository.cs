@@ -6,7 +6,7 @@ namespace LinguaCommunity.Infrastructure.Persistense.Repositories;
 
 public class LanguageRepository(ArticlesContext context): ILanguageRepository
 {
-    public async Task<IEnumerable<Language>> GetAllLanguages(CancellationToken cancellationToken) => 
+    public async Task<IEnumerable<Language>> GetLanguages(CancellationToken cancellationToken) => 
         await context.Languages
             .AsNoTracking()
             .ToListAsync(cancellationToken);
