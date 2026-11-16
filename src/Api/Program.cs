@@ -1,7 +1,6 @@
 using LinguaCommunity.Api.Authorization;
 using LinguaCommunity.Api.Handling;
 using LinguaCommunity.Application.Extensions;
-using LinguaCommunity.Domain.Models.Users;
 using LinguaCommunity.Infrastructure.Extensions;
 using LinguaCommunity.Infrastructure.Persistense;
 using Microsoft.EntityFrameworkCore;
@@ -40,9 +39,8 @@ builder.Services.AddControllers();
 builder.Services.AddLogging();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
-//TODO добавить политики с ролями в авторизацию
 
-builder.Services.AddAuthorization(policy => 
+builder.Services.AddAuthorization(policy =>
     policy.AddPolicy(Policies.AdminOnly, p => p.RequireRole(Policies.AllowedAdmin)));
 
 builder.AddApplication();
