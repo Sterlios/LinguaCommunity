@@ -11,10 +11,13 @@ namespace LinguaCommunity.Api.Controllers;
 public class AuthController(AuthService authService): ControllerBase
 {
     [HttpPost("register")]
-    public async Task<IActionResult> Register(IValidator<RegisterRequest> validator, RegisterRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Register(
+        [FromServices] IValidator<RegisterRequest> validator,
+        RegisterRequest request,
+        CancellationToken cancellationToken)
     {
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
-        
+
         if (!validationResult.IsValid)
             return BadRequest(validationResult.Errors);
 
@@ -23,10 +26,13 @@ public class AuthController(AuthService authService): ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<AuthResponse>> Login(IValidator<LoginRequest> validator, LoginRequest request, CancellationToken cancellationToken)
+    public async Task<ActionResult<AuthResponse>> Login(
+        [FromServices] IValidator<LoginRequest> validator,
+        LoginRequest request,
+        CancellationToken cancellationToken)
     {
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
-        
+
         if (!validationResult.IsValid)
             return BadRequest(validationResult.Errors);
 
