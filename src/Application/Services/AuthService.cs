@@ -46,7 +46,7 @@ public class AuthService(
             nickname: nickname
         );
 
-        if(await usersRepository.HasAnyUsers(cancellationToken))
+        if (!await usersRepository.HasAnyUsers(cancellationToken))
             user.ChangeRole(Role.Admin);
 
         usersRepository.Add(user);

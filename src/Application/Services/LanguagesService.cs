@@ -6,12 +6,15 @@ using LinguaCommunity.Domain.Models.Support;
 
 namespace LinguaCommunity.Application.Services;
 
-public class LanguagesService(ILanguageRepository languageRepository)
+public class LanguagesService(
+    ILanguageRepository languageRepository,
+    IUnitOfWork unitOfWork)
 {
     public async Task CreateLanguage(LanguageCreateRequest request, CancellationToken cancellationToken)
     {
         var language = new Language(request.Code, request.Name, request.NativeName);
         languageRepository.AddLanguage(language, cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<List<LanguageResponse>> GetEnabledLanguages(CancellationToken cancellationToken)
@@ -43,5 +46,7 @@ public class LanguagesService(ILanguageRepository languageRepository)
             else
                 language.Deactivate();
         }
+
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

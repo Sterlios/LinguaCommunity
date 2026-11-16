@@ -12,14 +12,15 @@ public class User
         Email = email ?? throw new ArgumentNullException(nameof(email));
         Nickname = nickname ?? throw new ArgumentNullException(nameof(nickname));
         PasswordHash = passwordHash;
+        Role = Role.User;
     }
 
     public UserId Id { get; }
     public Email Email { get; private set; }
     public Nickname Nickname { get; }
     public string PasswordHash { get; private set; }
-    public Role Role { get; private set; } = Role.User;
+    public Role Role { get; private set; }
 
-    public void ChangeRole(Role newRole) => 
+    public void ChangeRole(Role newRole) =>
         Role = newRole;
 }
