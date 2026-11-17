@@ -1,8 +1,7 @@
-﻿using LinguaCommunity.Domain.Models.Articles;
-using LinguaCommunity.Domain.Models.Support;
+﻿using LinguaCommunity.Domain.Models.Support;
 using TaskStatus = LinguaCommunity.Domain.Models.Support.TaskStatus;
 
-namespace LinguaCommunity.Domain.Models.Translations;
+namespace LinguaCommunity.Domain.Models.Articles;
 
 public record struct TranslationId(Guid Id);
 

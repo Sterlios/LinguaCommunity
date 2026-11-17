@@ -17,7 +17,7 @@ public class ArticlesRepository(ArticlesContext context): IArticlesRepository
         await context.Articles
             .SingleOrDefaultAsync(a => a.Id == id, cancellationToken);
 
-    public async Task<Article?> ReadArticleById(ArticleId id, CancellationToken cancellationToken) =>
+    public async Task<Article?> ReadArticle(ArticleId id, CancellationToken cancellationToken) =>
         await context.Articles
             .AsNoTracking()
             .SingleOrDefaultAsync(a => a.Id == id, cancellationToken);

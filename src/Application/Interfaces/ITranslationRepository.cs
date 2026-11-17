@@ -1,4 +1,4 @@
-﻿using LinguaCommunity.Domain.Models.Translations;
+﻿using LinguaCommunity.Domain.Models.Articles;
 
 namespace LinguaCommunity.Application.Interfaces;
 

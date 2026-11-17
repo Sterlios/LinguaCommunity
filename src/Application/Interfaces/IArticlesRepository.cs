@@ -8,6 +8,6 @@ public interface IArticlesRepository
     void AddArticle(Article article);
     Task<Article?> GetArticleById(ArticleId id, CancellationToken cancellationToken);
     Task<List<Article>> ReadArticles(PageParameters pageParameters, CancellationToken cancellationToken);
-    Task<Article?> ReadArticleById(ArticleId id, CancellationToken cancellationToken);
+    Task<Article?> ReadArticle(ArticleId id, CancellationToken cancellationToken);
     void DeleteArticle(Article article);
 }

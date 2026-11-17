@@ -15,8 +15,8 @@ public class ArticlesController(ArticlesService service): ControllerBase
         await service.GetArticles(pageParameters, cancellationToken);
 
     [HttpGet("{id}")]
-    public async Task<ArticleDetailResponse> GetArticleById(Guid id, CancellationToken cancellationToken = default) =>
-        await service.GetArticleById(id, cancellationToken);
+    public async Task<ArticleDetailResponse> GetArticle(Guid id, CancellationToken cancellationToken = default) =>
+        await service.GetArticle(id, cancellationToken);
 
     [HttpPost]
     [Authorize]

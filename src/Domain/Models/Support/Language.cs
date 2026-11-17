@@ -4,9 +4,9 @@ public record LanguageId(Guid Id) { }
 public class Language
 {
     public LanguageId Id { get; } = new LanguageId(Guid.CreateVersion7());
-    public string Code { get; }
-    public string Name { get; }
-    public string NativeName { get; }
+    public string Code { get; } = null!;
+    public string Name { get; } = null!;
+    public string NativeName { get; } = null!;
     public bool IsEnabled { get; private set; } = true;
 
     public Language(string code, string name, string nativeName)
