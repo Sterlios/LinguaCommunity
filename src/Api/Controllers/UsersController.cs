@@ -1,5 +1,6 @@
 ﻿using LinguaCommunity.Api.Authorization;
 using LinguaCommunity.Application.Dtos.Requests;
+using LinguaCommunity.Application.Dtos.Responses;
 using LinguaCommunity.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,13 @@ namespace LinguaCommunity.Api.Controllers;
 [ApiController]
 public class UsersController(UsersService usersService): ControllerBase
 {
+    [HttpGet]
+    public async Task<List<UserResponse>> GetUsers(PageParameters pageParameters, CancellationToken cancellationToken)
+    {
+        var users = await usersService.GetUsers(pageParameters, cancellationToken);
+        return users;
+    }
+
     [HttpPut]
     [Authorize(Policy = Policies.AdminOnly)]
     public async Task<IActionResult> ChangeRole(UserChangeRole request, CancellationToken cancellationToken)

@@ -1,4 +1,5 @@
-﻿using LinguaCommunity.Application.Interfaces;
+﻿using LinguaCommunity.Application.Dtos.Requests;
+using LinguaCommunity.Application.Interfaces;
 using LinguaCommunity.Domain.Models.Articles;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,8 +22,10 @@ public class ArticlesRepository(ArticlesContext context): IArticlesRepository
             .AsNoTracking()
             .SingleOrDefaultAsync(a => a.Id == id, cancellationToken);
 
-    public async Task<List<Article>> ReadArticles(CancellationToken cancellationToken) =>
+    public async Task<List<Article>> ReadArticles(PageParameters pageParameters, CancellationToken cancellationToken) =>
         await context.Articles
             .AsNoTracking()
+            .Skip((pageParameters.Page - 1) * pageParameters.PageSize)
+            .Take(pageParameters.PageSize)
             .ToListAsync(cancellationToken);
 }

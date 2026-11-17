@@ -1,4 +1,5 @@
-﻿using LinguaCommunity.Domain.Models.Users;
+﻿using LinguaCommunity.Application.Dtos.Requests;
+using LinguaCommunity.Domain.Models.Users;
 
 namespace LinguaCommunity.Application.Interfaces;
 
@@ -12,4 +13,5 @@ public interface IUsersRepository
     void Add(User user);
     Task<bool> HasAnyUsers(CancellationToken cancellationToken);
     Task<User?> GetUserById(UserId userId, CancellationToken cancellationToken);
+    Task<List<User>> ReadUsers(PageParameters pageParameters, CancellationToken cancellationToken);
 }

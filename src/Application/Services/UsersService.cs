@@ -1,4 +1,6 @@
-﻿using LinguaCommunity.Application.Dtos.Requests;
+﻿using LinguaCommunity.Application.Dtos.Mapping;
+using LinguaCommunity.Application.Dtos.Requests;
+using LinguaCommunity.Application.Dtos.Responses;
 using LinguaCommunity.Application.Interfaces;
 using LinguaCommunity.Domain.Models.Users;
 
@@ -16,5 +18,11 @@ public class UsersService(
         user.ChangeRole(request.NewRole);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<List<UserResponse>> GetUsers(PageParameters pageParameters, CancellationToken cancellationToken)
+    {
+        var users = await usersRepository.ReadUsers(pageParameters, cancellationToken);
+        return users.Select(u => u.ToResponse()).ToList();
     }
 }

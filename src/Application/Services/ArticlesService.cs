@@ -63,9 +63,9 @@ public class ArticlesService(
         return article.ToDetailResponse(author);
     }
 
-    public async Task<List<ArticlesItemResponse>> GetArticles(CancellationToken cancellationToken = default)
+    public async Task<List<ArticlesItemResponse>> GetArticles(PageParameters pageParameters, CancellationToken cancellationToken = default)
     {
-        var articles = await articlesRepository.ReadArticles(cancellationToken);
+        var articles = await articlesRepository.ReadArticles(pageParameters, cancellationToken);
         var articlesAuthorIds = articles.Select(a => a.AuthorId).Distinct().ToList();
 
         var authors = await userRepository.ReadUsersByIds(articlesAuthorIds, cancellationToken);

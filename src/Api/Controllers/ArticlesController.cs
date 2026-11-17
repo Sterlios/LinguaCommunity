@@ -11,8 +11,8 @@ namespace LinguaCommunity.Api.Controllers;
 public class ArticlesController(ArticlesService service): ControllerBase
 {
     [HttpGet]
-    public async Task<List<ArticlesItemResponse>> GetArticles(CancellationToken cancellationToken = default) =>
-        await service.GetArticles(cancellationToken);
+    public async Task<List<ArticlesItemResponse>> GetArticles(PageParameters pageParameters, CancellationToken cancellationToken = default) =>
+        await service.GetArticles(pageParameters, cancellationToken);
 
     [HttpGet("{id}")]
     public async Task<ArticleDetailResponse> GetArticleById(Guid id, CancellationToken cancellationToken = default) =>
