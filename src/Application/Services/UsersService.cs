@@ -1,5 +1,6 @@
 ﻿using LinguaCommunity.Application.Dtos.Mapping;
 using LinguaCommunity.Application.Dtos.Requests;
+using LinguaCommunity.Application.Dtos.Requests.User;
 using LinguaCommunity.Application.Dtos.Responses;
 using LinguaCommunity.Application.Interfaces;
 using LinguaCommunity.Domain.Models.Users;

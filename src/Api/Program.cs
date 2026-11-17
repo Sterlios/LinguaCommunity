@@ -2,7 +2,7 @@ using FluentValidation;
 using LinguaCommunity.Api.Authorization;
 using LinguaCommunity.Api.Handling;
 using LinguaCommunity.Api.Validators;
-using LinguaCommunity.Application.Dtos.Requests;
+using LinguaCommunity.Application.Dtos.Requests.User;
 using LinguaCommunity.Application.Extensions;
 using LinguaCommunity.Infrastructure.Extensions;
 using LinguaCommunity.Infrastructure.Persistense;

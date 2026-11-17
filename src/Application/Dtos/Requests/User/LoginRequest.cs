@@ -1,4 +1,4 @@
-﻿namespace LinguaCommunity.Application.Dtos.Requests;
+﻿namespace LinguaCommunity.Application.Dtos.Requests.User;
 
 public record LoginRequest(
     string Email, 

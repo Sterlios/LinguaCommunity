@@ -1,5 +1,6 @@
 ﻿using LinguaCommunity.Api.Authorization;
 using LinguaCommunity.Application.Dtos.Requests;
+using LinguaCommunity.Application.Dtos.Requests.User;
 using LinguaCommunity.Application.Dtos.Responses;
 using LinguaCommunity.Application.Services;
 using Microsoft.AspNetCore.Authorization;

@@ -1,5 +1,5 @@
 ﻿using LinguaCommunity.Application.Dtos.Mapping;
-using LinguaCommunity.Application.Dtos.Requests;
+using LinguaCommunity.Application.Dtos.Requests.Language;
 using LinguaCommunity.Application.Dtos.Responses;
 using LinguaCommunity.Application.Exceptions;
 using LinguaCommunity.Application.Interfaces;

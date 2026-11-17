@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using LinguaCommunity.Application.Dtos.Requests;
+using LinguaCommunity.Application.Dtos.Requests.User;
 
 namespace LinguaCommunity.Api.Validators;
 
