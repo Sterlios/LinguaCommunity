@@ -1,4 +1,5 @@
-﻿using LinguaCommunity.Application.Dtos.Requests;
+﻿using LinguaCommunity.Application.Dtos.Mapping;
+using LinguaCommunity.Application.Dtos.Requests;
 using LinguaCommunity.Application.Dtos.Responses;
 using LinguaCommunity.Application.Exceptions;
 using LinguaCommunity.Application.Interfaces;
@@ -22,14 +23,14 @@ public class LanguagesService(
         var languages = await languageRepository.GetLanguages(cancellationToken);
         return languages
             .Where(l => l.IsEnabled)
-            .Select(l => new LanguageResponse(l.Code, l.Name, l.NativeName))
+            .Select(l => l.ToResponse())
             .ToList();
     }
 
     public async Task<List<LanguageResponse>> GetLanguages(CancellationToken cancellationToken)
     {
         var languages = await languageRepository.GetLanguages(cancellationToken);
-        return languages.Select(l => new LanguageResponse(l.Code, l.Name, l.NativeName)).ToList();
+        return languages.Select(l => l.ToResponse()).ToList();
     }
 
     public async Task UpdateLanguages(LanguagesUpdateRequest request, CancellationToken cancellationToken)
