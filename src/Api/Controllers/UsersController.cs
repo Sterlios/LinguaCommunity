@@ -25,7 +25,8 @@ public class UsersController(UsersService usersService): ControllerBase
     {
         var authorId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value ?? Guid.Empty.ToString());
 
-        if (authorId == request            return Forbid("You cannot change your own role.");
+        if (authorId == request.UserId)
+            return Forbid("You cannot change your own role.");
 
         await usersService.ChangeRole(request, cancellationToken);
         return Ok();
