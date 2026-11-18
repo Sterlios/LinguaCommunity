@@ -8,7 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Translations\" />
+    <Compile Remove="Models\Translations\**" />
+    <EmbeddedResource Remove="Models\Translations\**" />
+    <None Remove="Models\Translations\**" />
   </ItemGroup>
 
 </Project>

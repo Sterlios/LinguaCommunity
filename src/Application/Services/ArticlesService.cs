@@ -40,7 +40,7 @@ public class ArticlesService(
     {
         var articleVoId = new ArticleId(articleId);
 
-        var article = await articlesRepository.ReadArticle(articleVoId, cancellationToken) ??
+        var article = await articlesRepository.GetArticle(articleVoId, cancellationToken) ??
             throw new ArticleNotFoundException(articleId);
 
         if (article.AuthorId.Id != authorId)
@@ -51,17 +51,14 @@ public class ArticlesService(
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<ArticleDetailResponse> GetArticle(Guid articleId, CancellationToken cancellationToken)
+    public async Task<ArticleDetailResponse> GetArticle(Guid articleId, string langCode, CancellationToken cancellationToken)
     {
         var articleVoId = new ArticleId(articleId);
 
-        var article = await articlesRepository.ReadArticle(articleVoId, cancellationToken) ??
+        var article = await articlesRepository.ReadArticle(articleVoId, langCode, cancellationToken) ??
             throw new ArticleNotFoundException(articleId);
 
-        var author = await userRepository.ReadUserById(article.AuthorId, cancellationToken) ??
-            throw new InvalidOperationException($"Author with ID {article.AuthorId} not found.");
-
-        return article.ToDetailResponse(author);
+        return article.ToResponse();
     }
 
     public async Task<List<ArticlesItemResponse>> GetArticles(PageParameters pageParameters, CancellationToken cancellationToken = default)

@@ -1,4 +1,5 @@
-﻿using LinguaCommunity.Application.Dtos.Responses;
+﻿using LinguaCommunity.Application.Dtos.ReadModels;
+using LinguaCommunity.Application.Dtos.Responses;
 using LinguaCommunity.Domain.Models.Articles;
 using LinguaCommunity.Domain.Models.Users;
 
@@ -6,14 +7,14 @@ namespace LinguaCommunity.Application.Dtos.Mapping;
 
 public static class ArticleMapping
 {
-    public static ArticleDetailResponse ToDetailResponse(this Article article, User author) =>
+    public static ArticleDetailResponse ToResponse(this ArticleReadModel article) =>
         new(
-            Id: article.Id.Id,
+            Id: article.Id,
             Title: article.Title,
             Content: article.Content,
             Author: new AuthorResponse(
-                Id: author.Id.Id,
-                Nickname: author.Nickname.Value
+                Id: article.Author.Id,
+                Nickname: article.Author.Nickname
             ),
             CreatedAt: article.CreatedAt,
             UpdatedAt: article.UpdatedAt
