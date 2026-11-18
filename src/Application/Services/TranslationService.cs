@@ -1,6 +1,5 @@
 ﻿using LinguaCommunity.Application.Interfaces;
 using LinguaCommunity.Domain.Models.Articles;
-using LinguaCommunity.Domain.Models.Translations;
 
 namespace LinguaCommunity.Application.Services;
 
@@ -10,7 +9,7 @@ public class TranslationService(
 {
     public async Task CreateTasks(Article article, CancellationToken cancellationToken)
     {
-        var targetLanguages = await languageRepository.GetAllLanguages(cancellationToken);
+        var targetLanguages = await languageRepository.GetLanguages(cancellationToken);
         
         foreach (var targetLanguage in targetLanguages)
         {

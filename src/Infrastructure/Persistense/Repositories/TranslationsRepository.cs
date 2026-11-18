@@ -1,5 +1,5 @@
 ﻿using LinguaCommunity.Application.Interfaces;
-using LinguaCommunity.Domain.Models.Translations;
+using LinguaCommunity.Domain.Models.Articles;
 
 namespace LinguaCommunity.Infrastructure.Persistense.Repositories;
 

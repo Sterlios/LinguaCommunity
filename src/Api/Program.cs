@@ -1,4 +1,8 @@
+using FluentValidation;
+using LinguaCommunity.Api.Authorization;
 using LinguaCommunity.Api.Handling;
+using LinguaCommunity.Api.Validators;
+using LinguaCommunity.Application.Dtos.Requests.User;
 using LinguaCommunity.Application.Extensions;
 using LinguaCommunity.Infrastructure.Extensions;
 using LinguaCommunity.Infrastructure.Persistense;
@@ -38,7 +42,11 @@ builder.Services.AddControllers();
 builder.Services.AddLogging();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
-builder.Services.AddAuthorization();
+builder.Services.AddScoped<IValidator<LoginRequest>, LoginValidator>();
+builder.Services.AddScoped<IValidator<RegisterRequest>, RegisterValidator>();
+
+builder.Services.AddAuthorization(policy =>
+    policy.AddPolicy(Policies.AdminOnly, p => p.RequireRole(Policies.AllowedAdmin)));
 
 builder.AddApplication();
 builder.AddInfrastructure();

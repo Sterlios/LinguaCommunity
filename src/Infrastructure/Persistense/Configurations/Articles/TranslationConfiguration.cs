@@ -1,6 +1,5 @@
 ﻿using LinguaCommunity.Domain.Models.Articles;
 using LinguaCommunity.Domain.Models.Support;
-using LinguaCommunity.Domain.Models.Translations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

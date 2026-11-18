@@ -1,5 +1,5 @@
 ﻿using LinguaCommunity.Application.Dtos;
-using LinguaCommunity.Application.Dtos.Requests;
+using LinguaCommunity.Application.Dtos.Requests.User;
 using LinguaCommunity.Application.Dtos.Responses;
 using LinguaCommunity.Application.Exceptions;
 using LinguaCommunity.Application.Interfaces;
@@ -21,7 +21,7 @@ public class AuthService(
         if (user == null || !passwordHasher.VerifyPassword(request.Password, user.PasswordHash))
             throw new InvalidLoginException();
 
-        var tokenPayload = new TokenPayload(user.Id);
+        var tokenPayload = new TokenPayload(user.Id, user.Role);
 
         return new AuthResponse(Token: tokenService.GenerateToken(tokenPayload));
     }
@@ -45,6 +45,9 @@ public class AuthService(
             passwordHash: hashedPassword,
             nickname: nickname
         );
+
+        if (!await usersRepository.HasAnyUsers(cancellationToken))
+            user.ChangeRole(Role.Admin);
 
         usersRepository.Add(user);
 

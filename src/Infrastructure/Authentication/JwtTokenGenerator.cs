@@ -24,7 +24,8 @@ public class JwtTokenGenerator(IOptions<JwtOptions> options): ITokenService
     {
         var claims = new List<Claim>
         {
-            new(JwtRegisteredClaimNames.Sub, payload.UserId.Id.ToString())
+            new(JwtRegisteredClaimNames.Sub, payload.UserId.Id.ToString()),
+            new(ClaimTypes.Role, payload.Role.ToString())
         };
 
         var key = new SymmetricSecurityKey(

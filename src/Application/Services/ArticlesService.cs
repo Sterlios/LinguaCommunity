@@ -1,5 +1,6 @@
 ﻿using LinguaCommunity.Application.Dtos.Mapping;
 using LinguaCommunity.Application.Dtos.Requests;
+using LinguaCommunity.Application.Dtos.Requests.Article;
 using LinguaCommunity.Application.Dtos.Responses;
 using LinguaCommunity.Application.Exceptions;
 using LinguaCommunity.Application.Interfaces;
@@ -39,7 +40,7 @@ public class ArticlesService(
     {
         var articleVoId = new ArticleId(articleId);
 
-        var article = await articlesRepository.ReadArticleById(articleVoId, cancellationToken) ??
+        var article = await articlesRepository.ReadArticle(articleVoId, cancellationToken) ??
             throw new ArticleNotFoundException(articleId);
 
         if (article.AuthorId.Id != authorId)
@@ -50,11 +51,11 @@ public class ArticlesService(
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<ArticleDetailResponse> GetArticleById(Guid articleId, CancellationToken cancellationToken)
+    public async Task<ArticleDetailResponse> GetArticle(Guid articleId, CancellationToken cancellationToken)
     {
         var articleVoId = new ArticleId(articleId);
 
-        var article = await articlesRepository.ReadArticleById(articleVoId, cancellationToken) ??
+        var article = await articlesRepository.ReadArticle(articleVoId, cancellationToken) ??
             throw new ArticleNotFoundException(articleId);
 
         var author = await userRepository.ReadUserById(article.AuthorId, cancellationToken) ??
@@ -63,9 +64,9 @@ public class ArticlesService(
         return article.ToDetailResponse(author);
     }
 
-    public async Task<List<ArticlesItemResponse>> GetArticles(CancellationToken cancellationToken = default)
+    public async Task<List<ArticlesItemResponse>> GetArticles(PageParameters pageParameters, CancellationToken cancellationToken = default)
     {
-        var articles = await articlesRepository.ReadArticles(cancellationToken);
+        var articles = await articlesRepository.ReadArticles(pageParameters, cancellationToken);
         var articlesAuthorIds = articles.Select(a => a.AuthorId).Distinct().ToList();
 
         var authors = await userRepository.ReadUsersByIds(articlesAuthorIds, cancellationToken);
