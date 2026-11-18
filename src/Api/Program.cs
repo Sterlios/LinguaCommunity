@@ -45,8 +45,8 @@ builder.Services.AddProblemDetails();
 builder.Services.AddScoped<IValidator<LoginRequest>, LoginValidator>();
 builder.Services.AddScoped<IValidator<RegisterRequest>, RegisterValidator>();
 
-builder.Services.AddAuthorization(policy =>
-    policy.AddPolicy(Policies.AdminOnly, p => p.RequireRole(Policies.AllowedAdmin)));
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy(Policies.AdminOnly, p => p.RequireRole(Policies.AllowedAdmin));
 
 builder.AddApplication();
 builder.AddInfrastructure();

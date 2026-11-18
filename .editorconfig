@@ -314,7 +314,7 @@ dotnet_naming_style.camelcase.required_suffix =
 dotnet_naming_style.camelcase.word_separator = 
 dotnet_naming_style.camelcase.capitalization = camel_case
 
-dotnet_naming_style.staticcase.required_prefix = s_
+dotnet_naming_style.staticcase.private.required_prefix = s_
 dotnet_naming_style.staticcase.required_suffix = 
 dotnet_naming_style.staticcase.word_separator = 
-dotnet_naming_style.staticcase.capitalization = camel_case
+dotnet_naming_style.staticcase.private.capitalization = camel_case
