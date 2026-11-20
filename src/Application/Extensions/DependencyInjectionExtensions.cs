@@ -9,6 +9,7 @@ public static class DependencyInjectionExtensions
     public static IHostApplicationBuilder AddApplication(this IHostApplicationBuilder builder)
     {
         builder.Services.AddScoped<AuthService>();
+        builder.Services.AddScoped<UsersService>();
         builder.Services.AddScoped<ArticlesService>();
         builder.Services.AddScoped<LanguagesService>();
         builder.Services.AddScoped<TranslationService>();

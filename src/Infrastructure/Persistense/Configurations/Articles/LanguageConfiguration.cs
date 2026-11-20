@@ -18,6 +18,14 @@ public class LanguageConfiguration: IEntityTypeConfiguration<Language>
                 value => new LanguageId(value))
             .ValueGeneratedNever();
 
+        builder.Property(l => l.Code)
+            .IsRequired()
+            .HasMaxLength(10);
+
+        builder.Property(l => l.NativeName)
+            .IsRequired()
+            .HasMaxLength(200);
+
         builder.Property(l => l.Name)
             .IsRequired()
             .HasMaxLength(200);
