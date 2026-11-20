@@ -1,6 +1,6 @@
 services:
   api:
-    image: lingua-community-${DOCKER_REGISTRY-}api
+    image: lingua-community-api:${DOCKER_REGISTRY-}
     build:
       context: .
       dockerfile: src/Api/Dockerfile

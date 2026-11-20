@@ -40,8 +40,10 @@ if (!builder.Environment.IsProduction())
 
 builder.Services.AddControllers();
 builder.Services.AddLogging();
+
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
+
 builder.Services.AddScoped<IValidator<LoginRequest>, LoginValidator>();
 builder.Services.AddScoped<IValidator<RegisterRequest>, RegisterValidator>();
 
@@ -70,6 +72,7 @@ app.UseExceptionHandler();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();

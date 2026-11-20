@@ -13,9 +13,16 @@ public class LanguagesService(
 {
     public async Task CreateLanguage(LanguageCreateRequest request, CancellationToken cancellationToken)
     {
-        var language = new Language(request.Code, request.Name, request.NativeName);
-        languageRepository.AddLanguage(language, cancellationToken);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        try
+        {
+            var language = new Language(request.Code, request.Name, request.NativeName);
+            languageRepository.AddLanguage(language, cancellationToken);
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+        }
+        catch
+        {
+            throw new LanguageExsistsException(request.Code);
+        }
     }
 
     public async Task<List<LanguageResponse>> GetEnabledLanguages(CancellationToken cancellationToken)

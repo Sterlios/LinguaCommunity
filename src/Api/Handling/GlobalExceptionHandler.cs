@@ -23,6 +23,8 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger): IEx
                 (StatusCodes.Status409Conflict, "Email already exists"),
             InvalidLoginException =>
                 (StatusCodes.Status401Unauthorized, "Invalid email or password."),
+            LanguageExsistsException =>
+                (StatusCodes.Status409Conflict, "Language already exists."),
             _ =>
                 (StatusCodes.Status500InternalServerError, "Internal server error")
         };

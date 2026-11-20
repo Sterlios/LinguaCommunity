@@ -29,5 +29,8 @@ public class LanguageConfiguration: IEntityTypeConfiguration<Language>
         builder.Property(l => l.Name)
             .IsRequired()
             .HasMaxLength(200);
+
+        builder.HasIndex(l => l.Code)
+            .IsUnique();
     }
 }
