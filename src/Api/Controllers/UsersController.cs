@@ -13,7 +13,7 @@ namespace LinguaCommunity.Api.Controllers;
 public class UsersController(UsersService usersService): ControllerBase
 {
     [HttpGet]
-    public async Task<List<UserResponse>> GetUsers(PageParameters pageParameters, CancellationToken cancellationToken)
+    public async Task<List<UserResponse>> GetUsers([FromQuery] PageParameters pageParameters, CancellationToken cancellationToken)
     {
         var users = await usersService.GetUsers(pageParameters, cancellationToken);
         return users;

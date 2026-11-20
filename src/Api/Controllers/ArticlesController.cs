@@ -12,7 +12,7 @@ namespace LinguaCommunity.Api.Controllers;
 public class ArticlesController(ArticlesService service): ControllerBase
 {
     [HttpGet]
-    public async Task<List<ArticlesItemResponse>> GetArticles(PageParameters pageParameters, CancellationToken cancellationToken = default) =>
+    public async Task<List<ArticlesItemResponse>> GetArticles([FromQuery] PageParameters pageParameters, CancellationToken cancellationToken = default) =>
         await service.GetArticles(pageParameters, cancellationToken);
 
     [HttpGet("{id}")]
