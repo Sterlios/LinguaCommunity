@@ -13,7 +13,7 @@ namespace LinguaCommunity.Application.Services;
 public class ArticlesService(
     ILogger<ArticlesService> logger,
     UsersService usersService,
-    TranslationService translationService,
+    TranslationsService translationService,
     LanguagesService languagesService,
     IArticlesRepository articlesRepository,
     IUnitOfWork unitOfWork)
