@@ -60,7 +60,8 @@ public class LanguagesService(
 
     internal async Task<LanguageId> GetLanguageIdByCode(string languageCode, CancellationToken cancellationToken)
     {
-        var language = await languageRepository.GetLanguageByCode(languageCode, cancellationToken);
+        var language = await languageRepository.GetLanguageByCode(languageCode, cancellationToken) 
+            ?? throw new LanguageNotFoundException(languageCode);
 
         if (!language.IsEnabled)
             throw new LanguageDisabledException(language);

@@ -9,6 +9,9 @@ public class LanguageRepository(ArticlesContext context): ILanguageRepository
     public void AddLanguage(Language language, CancellationToken cancellationToken) =>
         context.Languages.Add(language);
 
+    public async Task<Language?> GetLanguageByCode(string languageCode, CancellationToken cancellationToken) =>
+        await context.Languages.SingleOrDefaultAsync(l => l.Code == languageCode, cancellationToken: cancellationToken);
+    
     public async Task<IEnumerable<Language>> GetLanguages(CancellationToken cancellationToken) =>
         await context.Languages
             .AsNoTracking()
