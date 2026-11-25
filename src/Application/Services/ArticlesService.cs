@@ -5,7 +5,6 @@ using LinguaCommunity.Application.Dtos.Responses;
 using LinguaCommunity.Application.Exceptions;
 using LinguaCommunity.Application.Interfaces;
 using LinguaCommunity.Domain.Models.Articles;
-using LinguaCommunity.Domain.Models.Support;
 using LinguaCommunity.Domain.Models.Users;
 using Microsoft.Extensions.Logging;
 
@@ -13,18 +12,21 @@ namespace LinguaCommunity.Application.Services;
 
 public class ArticlesService(
     ILogger<ArticlesService> logger,
-    IUsersRepository userRepository,
-    IArticlesRepository articlesRepository,
+    UsersService usersService,
     TranslationService translationService,
+    LanguagesService languagesService,
+    IArticlesRepository articlesRepository,
     IUnitOfWork unitOfWork)
 {
     public async Task CreateArticle(Guid authorId, CreateArticleRequest articleData, CancellationToken cancellationToken)
     {
+        var languageId = await languagesService.GetLanguageIdByCode(articleData.LanguageCode, cancellationToken);
+
         var article = new Article(
             authorId: new UserId(authorId),
             title: articleData.Title,
             content: articleData.Content,
-            languageId: new LanguageId(articleData.LanguageId)
+            languageId: languageId
             );
 
         articlesRepository.AddArticle(article);
@@ -66,7 +68,7 @@ public class ArticlesService(
         var articles = await articlesRepository.ReadArticles(pageParameters, cancellationToken);
         var articlesAuthorIds = articles.Select(a => a.AuthorId).Distinct().ToList();
 
-        var authors = await userRepository.ReadUsersByIds(articlesAuthorIds, cancellationToken);
+        var authors = await usersService.ReadUsersByIds(articlesAuthorIds, cancellationToken);
 
         if (authors.Count != articlesAuthorIds.Count)
         {

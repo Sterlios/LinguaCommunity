@@ -13,7 +13,7 @@ public class UsersService(
 {
     public async Task ChangeRole(UserChangeRole request, CancellationToken cancellationToken)
     {
-        var user = await usersRepository.GetUserById(new UserId(request.UserId), cancellationToken) 
+        var user = await usersRepository.GetUserById(new UserId(request.UserId), cancellationToken)
             ?? throw new Exception("User not found");
 
         user.ChangeRole(request.NewRole);
@@ -26,4 +26,7 @@ public class UsersService(
         var users = await usersRepository.ReadUsers(pageParameters, cancellationToken);
         return users.Select(u => u.ToResponse()).ToList();
     }
+
+    internal async Task<List<User>> ReadUsersByIds(List<UserId> articlesAuthorIds, CancellationToken cancellationToken) => 
+        await usersRepository.ReadUsersByIds(articlesAuthorIds, cancellationToken);
 }

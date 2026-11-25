@@ -16,6 +16,7 @@ public static class ArticleMapping
                 Id: article.Author.Id,
                 Nickname: article.Author.Nickname
             ),
+            Language: article.Language.ToResponse(),
             CreatedAt: article.CreatedAt,
             UpdatedAt: article.UpdatedAt
         );
