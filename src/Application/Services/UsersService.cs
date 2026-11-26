@@ -26,4 +26,7 @@ public class UsersService(
         var users = await usersRepository.ReadUsers(pageParameters, cancellationToken);
         return users.Select(u => u.ToResponse()).ToList();
     }
+
+    internal async Task<List<User>> ReadUsersByIds(List<UserId> articlesAuthorIds, CancellationToken cancellationToken) => 
+        await usersRepository.ReadUsersByIds(articlesAuthorIds, cancellationToken);
 }

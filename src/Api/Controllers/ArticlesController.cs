@@ -21,13 +21,13 @@ public class ArticlesController(ArticlesService service): ControllerBase
 
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> CreateArticle(CreateArticleRequest article, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> CreateArticle(CreateArticleRequest articleData, CancellationToken cancellationToken = default)
     {
         var userId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value ?? "");
 
         await service.CreateArticle(
             authorId: userId,
-            articleData: article,
+            articleData: articleData,
             cancellationToken);
 
         return Created();

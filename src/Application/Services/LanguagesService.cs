@@ -19,7 +19,7 @@ public class LanguagesService(
             languageRepository.AddLanguage(language, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
         }
-        catch // TODO Отловить конкретный exception
+        catch // TODO: отлавливать конкретное исключение
         {
             throw new LanguageExsistsException(request.Code);
         }
@@ -56,5 +56,16 @@ public class LanguagesService(
         }
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
+    }
+
+    internal async Task<LanguageId> GetLanguageIdByCode(string languageCode, CancellationToken cancellationToken)
+    {
+        var language = await languageRepository.GetLanguageByCode(languageCode, cancellationToken) 
+            ?? throw new LanguageNotFoundException(languageCode);
+
+        if (!language.IsEnabled)
+            throw new LanguageDisabledException(language);
+
+        return language.Id;
     }
 }

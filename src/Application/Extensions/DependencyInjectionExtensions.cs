@@ -12,7 +12,7 @@ public static class DependencyInjectionExtensions
         builder.Services.AddScoped<UsersService>();
         builder.Services.AddScoped<ArticlesService>();
         builder.Services.AddScoped<LanguagesService>();
-        builder.Services.AddScoped<TranslationService>();
+        builder.Services.AddScoped<TranslationsService>();
 
         return builder;
     }
