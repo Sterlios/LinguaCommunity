@@ -19,7 +19,7 @@ public class LanguagesService(
             languageRepository.AddLanguage(language, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
         }
-        catch
+        catch // TODO Отловить конкретный exception
         {
             throw new LanguageExsistsException(request.Code);
         }
