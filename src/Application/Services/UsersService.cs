@@ -14,7 +14,7 @@ public class UsersService(
     public async Task ChangeRole(UserChangeRole request, CancellationToken cancellationToken)
     {
         var user = await usersRepository.GetUserById(new UserId(request.UserId), cancellationToken)
-            ?? throw new Exception("User not found");
+            ?? throw new Exception("User not found"); // TODO custom exception
 
         user.ChangeRole(request.NewRole);
 
