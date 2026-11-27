@@ -60,6 +60,9 @@ public class ArticlesService(
         var article = await articlesRepository.ReadArticle(articleVoId, langCode, cancellationToken) ??
             throw new ArticleNotFoundException(articleId);
 
+        if (string.IsNullOrWhiteSpace(article.Content))
+            throw new ArticleTranslateNotFoundException(article);
+
         return article.ToResponse();
     }
 

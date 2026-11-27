@@ -15,6 +15,8 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger): IEx
         {
             ArticleNotFoundException =>
                 (StatusCodes.Status404NotFound, "Article not found"),
+            ArticleTranslateNotFoundException => 
+                (StatusCodes.Status404NotFound, "Translate not found for this language."),
             AccessDeniedException =>
                 (StatusCodes.Status403Forbidden, "Access denied"),
             NicknameAlreadyExistsException =>
